@@ -1,0 +1,25 @@
+﻿
+@{ 
+    Layout = "_BasicLayout";
+    ViewBag.Title = "Computer Network";
+}
+
+    <div class="container">
+        <div class="form-row">
+            <div class="col-md-2 justify-content-center btn-group-vertical text-center" role="group">
+                <button type="button" id="routerbuttonid" class="btn btn-secondary" onclick="addRouter()">Router</button>
+                <button type="button" id="switchbuttonid" class="btn btn-secondary" onclick="addSwitch()">Switch</button>
+                <button type="button" id="computerbuttonid" class="btn btn-secondary" onclick="addComputer()">Computer</button>
+                <button type="button" id="connectbuttonid" class="btn btn-secondary" onclick="addConnection()">Connect</button>
+                <button type="button" id="deletebuttonid" class="btn btn-secondary" onclick="deleteItem()">Delete Item</button>
+                <button type="button" id="deletebuttonid" class="btn btn-secondary" onclick="deleteEdge()">Delete Edge</button>
+
+                <button type="button" id="cleancanvasbuttonid" class="btn btn-secondary" onclick="resetAllNodes()">Clean</button>
+            </div>
+            <div id="mynetwork" class="col-md-8">
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+    </div>
+

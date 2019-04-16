@@ -15,6 +15,7 @@ namespace ComputerNetwork
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,10 +26,13 @@ namespace ComputerNetwork
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
+            /*  app.Run(async (context) =>
+              {
+                  await context.Response.WriteAsync("Hello World!");
+              });*/
+
+            app.UseStaticFiles(); //Musi istniec aby uzywac plikow statycznych
+            app.UseMvcWithDefaultRoute(); // Musi istniec aby zaladowac nasz widok
         }
     }
 }

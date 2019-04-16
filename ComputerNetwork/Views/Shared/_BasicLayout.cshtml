@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/vis.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <script src="~/scripts/vis.js"></script>
+    <script src="~/scripts/script.js"></script>
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+
+
+</body>
+<script>
+    var nodeIds, shadowState, nodesArray, nodes, edgesArray, edges, network;
+    var clickedid, clickedid2;
+    function startNetwork() {
+        // this list is kept to remove a random node.. we do not add node 1 here because it's used for changes
+        nodeIds = [];
+        shadowState = false;
+
+
+        // create an array with nodes
+        nodesArray = [
+
+        ];
+        nodes = new vis.DataSet(nodesArray);
+
+        // create an array with edges
+        edgesArray = [
+        ];
+        edges = new vis.DataSet(edgesArray);
+
+        // create a network
+        var container = document.getElementById('mynetwork');
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            manipulation: {
+                enabled: false,
+                addEdge: function (data, callback) {
+                    console.log('add edge!', data);
+                    callback(data);
+                }
+            },
+            interaction:
+            {
+                hover: true
+            }
+        };
+        network = new vis.Network(container, data, options);
+        network.on('click', function (properties) {
+            var ids = properties.nodes;
+            var ids2 = properties.edges;
+            var clickedNodes = nodes.get(ids);
+            var clickedNodes2 = edges.get(ids2);
+            clickedid = ids;
+            clickedid2 = ids2;
+            console.log(ids + '' + clickedNodes);
+            console.log(ids2 + '' + clickedNodes2);
+        });
+        network.on("hoverNode", function (params) {
+            network.canvas.body.container.style.cursor = 'pointer';
+        });
+        window.onresize = function () { network.fit(); }
+    }
+
+    function addConnection() {
+        network.enableEditMode();
+        network.addEdgeMode();
+    }
+
+    function addComputer() {
+        var newId = (Math.random() * 1e7).toString(32);
+        nodes.add({ id: newId, label: "Computer", image: "img/computer.png", shape: "image", "title": clickedid });
+        nodeIds.push(newId);
+    }
+
+    function addRouter() {
+        var newId = (Math.random() * 1e7).toString(32);
+        nodes.add({ id: newId, label: "Router", image: "img/Router.jpg", shape: "image" });
+        nodeIds.push(newId);
+    }
+
+    function addSwitch() {
+        var newId = (Math.random() * 1e7).toString(32);
+        nodes.add({ id: newId, label: "Switch", image: "img/Switch.jpg", shape: "image" });
+        nodeIds.push(newId);
+    }
+
+
+    function removeRandomNode() {
+        var randomNodeId = nodeIds[Math.floor(Math.random() * nodeIds.length)];
+        nodes.remove({ id: randomNodeId });
+
+        var index = nodeIds.indexOf(randomNodeId);
+        nodeIds.splice(index, 1);
+    }
+
+    function resetAllNodes() {
+        nodes.clear();
+        edges.clear();
+        nodes.add(nodesArray);
+        edges.add(edgesArray);
+    }
+
+    function deleteEdge() {
+        edges.remove(clickedid2);
+    }
+
+    function deleteItem() {
+        nodes.remove(clickedid);
+
+    }
+
+    function resetAll() {
+        if (network !== null) {
+            network.destroy();
+            network = null;
+        }
+        startNetwork();
+    }
+
+    startNetwork();
+</script>
+
+</html>
