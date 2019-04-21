@@ -7,5 +7,6 @@ namespace ComputerNetwork.Models
 {
     public class Switch
     {
+        public int Id { get; set; }
     }
 }

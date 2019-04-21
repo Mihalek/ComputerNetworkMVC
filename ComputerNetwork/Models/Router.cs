@@ -7,5 +7,6 @@ namespace ComputerNetwork.Models
 {
     public class Router
     {
+        public int Id { get; set; }
     }
 }

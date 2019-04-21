@@ -7,5 +7,6 @@ namespace ComputerNetwork.Models
 {
     public class Computer
     {
+        public int Id { get; set; }
     }
 }

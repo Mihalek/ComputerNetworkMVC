@@ -7,5 +7,6 @@ namespace ComputerNetwork.Models
 {
     public class Edge
     {
+        public int Id { get; set; }
     }
 }
