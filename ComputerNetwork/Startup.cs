@@ -22,7 +22,7 @@ namespace ComputerNetwork
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:ComputerNetwork:ConnectionString"]));
-            //services.AddTransient<>
+            services.AddSingleton<IRouterRepository, FakeRouterRepository>();
             services.AddMvc();
         }
 
@@ -39,8 +39,10 @@ namespace ComputerNetwork
                   await context.Response.WriteAsync("Hello World!");
               });*/
 
-            app.UseStaticFiles(); //Musi istniec aby uzywac plikow statycznych
-            app.UseMvcWithDefaultRoute(); // Musi istniec aby zaladowac nasz widok
+            app.UseStatusCodePages();
+            app.UseDeveloperExceptionPage();
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
