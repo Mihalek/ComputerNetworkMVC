@@ -19,6 +19,25 @@
 <script>
     var nodeIds, shadowState, nodesArray, nodes, edgesArray, edges, network;
     var clickedid, clickedid2;
+    var helpid;
+    var idrouter, idcomputer, idswitch = 0;
+
+    function growIdRouter() {
+        idrouter = idrouter + 1;
+        return idrouter;
+    }
+
+    function growIdSwitch() {
+        idswitch = idswitch + 1;
+        return idswitch;
+    }
+
+    function growIdComputer() {
+        idcomputer = idcomputer + 1;
+        return idcomputer;
+    }
+
+
     function startNetwork() {
         // this list is kept to remove a random node.. we do not add node 1 here because it's used for changes
         nodeIds = [];
@@ -63,14 +82,30 @@
             var clickedNodes2 = edges.get(ids2);
             clickedid = ids;
             clickedid2 = ids2;
-            console.log(ids + '' + clickedNodes);
-            console.log(ids2 + '' + clickedNodes2);
+            helpid = clickedid;
+            document.getElementById("dispid").innerHTML ="Object's ID: "+ clickedid;
+            //console.log(nodes.get(clickedid)[0].title);
+            console.log(nodes.get(clickedid)[0]);
         });
         network.on("hoverNode", function (params) {
             network.canvas.body.container.style.cursor = 'pointer';
         });
         window.onresize = function () { network.fit(); }
     }
+
+    function submitform() {
+
+     // document.getElementById('ipaddressform').value
+        var newID = helpid;
+        var NewIpAddress = document.getElementById('ipaddressform').value;
+        var NewMask = document.getElementById('maskform').value;
+        var NewDefaultGateway = document.getElementById('defaultgatewayform').value;
+        alert(newID);
+        nodes.update({ id: newID, ipaddress: NewIpAddress, mask: NewMask, defaultgateway: NewDefaultGateway, "title": "id: " + newID + "</br>" + "IP address: " + NewIpAddress + "</br>" + "Mask: " + NewMask + "</br>" + "Default Gateway: " + NewDefaultGateway});
+        document.getElementById('objectparameters').reset();
+
+    }
+
 
     function addConnection() {
         network.enableEditMode();
@@ -79,19 +114,21 @@
 
     function addComputer() {
         var newId = (Math.random() * 1e7).toString(32);
-        nodes.add({ id: newId, label: "Computer", image: "img/computer.png", shape: "image", "title": clickedid });
+        nodes.add({
+            id: newId, label: "Computer",ipaddress: "",mask: "", defaultgateway: "", image: "img/computer.png", shape: "image", "title": "id: " + newId + "</br>" + "IP address: "+"</br>"+ "Mask: " +"</br>"+"Default Gateway: "});       
         nodeIds.push(newId);
-    }
+    } 
 
     function addRouter() {
         var newId = (Math.random() * 1e7).toString(32);
-        nodes.add({ id: newId, label: "Router", image: "img/Router.jpg", shape: "image" });
+        nodes.add({ id: newId, label: "Router", ipaddress: "", mask: "", defaultgateway: "", image: "img/Router.jpg", shape: "image", "title": "id: " + newId + "</br>" + "IP address: " + "</br>" + "Mask: " + "</br>" + "Default Gateway: " });
         nodeIds.push(newId);
     }
 
     function addSwitch() {
         var newId = (Math.random() * 1e7).toString(32);
-        nodes.add({ id: newId, label: "Switch", image: "img/Switch.jpg", shape: "image" });
+        nodes.add({ id: newId, label: "Switch", ipaddress: "", mask: "", defaultgateway: "", image: "img/Switch.jpg", shape: "image", "title": "id: " + newId + "</br>" + "IP address: " + "</br>" + "Mask: " + "</br>" + "Default Gateway: " });
+
         nodeIds.push(newId);
     }
 
