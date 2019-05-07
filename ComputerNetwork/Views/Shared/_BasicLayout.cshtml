@@ -96,12 +96,13 @@
     function submitform() {
 
      // document.getElementById('ipaddressform').value
-        var newID = helpid;
+        var newID = helpid.toString(32);
         var NewIpAddress = document.getElementById('ipaddressform').value;
         var NewMask = document.getElementById('maskform').value;
         var NewDefaultGateway = document.getElementById('defaultgatewayform').value;
-        alert(newID);
+       // alert(newID);
         nodes.update({ id: newID, ipaddress: NewIpAddress, mask: NewMask, defaultgateway: NewDefaultGateway, "title": "id: " + newID + "</br>" + "IP address: " + NewIpAddress + "</br>" + "Mask: " + NewMask + "</br>" + "Default Gateway: " + NewDefaultGateway});
+
         document.getElementById('objectparameters').reset();
 
     }
@@ -115,7 +116,7 @@
     function addComputer() {
         var newId = (Math.random() * 1e7).toString(32);
         nodes.add({
-            id: newId, label: "Computer",ipaddress: "",mask: "", defaultgateway: "", image: "img/computer.png", shape: "image", "title": "id: " + newId + "</br>" + "IP address: "+"</br>"+ "Mask: " +"</br>"+"Default Gateway: "});       
+            id: newId, label: "Computer",ipaddress: "" ,mask: "" , defaultgateway: "" , image: "img/computer.png", shape: "image", "title": "id: " + newId + "</br>" + "IP address: "+"</br>"+ "Mask: " +"</br>"+"Default Gateway: "});       
         nodeIds.push(newId);
     } 
 

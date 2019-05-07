@@ -1,3 +1,7 @@
 .checked {
     color: orange;
 }
+
+col.md-1{
+    background-color: blue;
+}
