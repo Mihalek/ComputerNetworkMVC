@@ -84,6 +84,7 @@
             clickedid2 = ids2;
             helpid = clickedid;
             document.getElementById("idform").value = helpid.toString(32);
+            document.getElementById("nameofelementform").value = nodes.get(clickedid)[0].label.toString(32);
             //console.log(nodes.get(clickedid)[0].title);
             console.log(nodes.get(clickedid)[0]);
         });

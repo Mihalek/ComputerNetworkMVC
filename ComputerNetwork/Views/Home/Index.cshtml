@@ -23,20 +23,24 @@
 
             <form asp-controller="Home" asp-action="Index" id="objectparameters" method="post" target="votar">
                 <div class="form-group">
+                    <label asp-for="NameofElement">Name: </label>
+                    <input asp-for="NameofElement" id="nameofelementform" class="form-control" name="nameofelement" autocomplete="off" type="text" readonly />
+                </div>
+                <div class="form-group">
                     <label asp-for="IdOfElement">ID: </label>
-                    <input asp-for="IdOfElement" id="idform" class="form-control clearFields" name="idofelement" autocomplete="off" type="text" readonly />
+                    <input asp-for="IdOfElement" id="idform" class="form-control" name="idofelement" autocomplete="off" type="text" readonly />
                 </div>
                 <div class="form-group">
                     <label asp-for="IpAddress">IP-Address:</label>
-                    <input asp-for="IpAddress" name="ipaddress" class="form-control clearFields" id="ipaddressform" autocomplete="off" type="text" />
+                    <input asp-for="IpAddress" name="ipaddress" class="form-control" id="ipaddressform" autocomplete="off" type="text" />
                 </div>
                 <div class="form-group">
                     <label asp-for="Mask">Mask:</label>
-                    <input asp-for="Mask" type="text" name="mask" class="form-control clearFields" id="maskform" autocomplete="off" />
+                    <input asp-for="Mask" type="text" name="mask" class="form-control" id="maskform" autocomplete="off" />
                 </div>
                 <div class="form-group">
                     <label asp-for="Gateway">Default Gateway:</label>
-                    <input asp-for="Gateway" class="form-control clearFields" id="defaultgatewayform" name="gateway" autocomplete="off" type="text" />
+                    <input asp-for="Gateway" class="form-control" id="defaultgatewayform" name="gateway" autocomplete="off" type="text" />
                 </div>
                 <button type="submit" name="submit" onclick="submitform()" class="btn btn-primary">Add Parameters</button>
             </form>
