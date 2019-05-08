@@ -83,7 +83,7 @@
             clickedid = ids;
             clickedid2 = ids2;
             helpid = clickedid;
-            document.getElementById("dispid").innerHTML ="Object's ID: "+ clickedid;
+            document.getElementById("idform").value = helpid.toString(32);
             //console.log(nodes.get(clickedid)[0].title);
             console.log(nodes.get(clickedid)[0]);
         });
@@ -92,7 +92,9 @@
         });
         window.onresize = function () { network.fit(); }
     }
-
+    function cleanform() {
+        document.getElementById("objectparameters").reset();
+    }
     function submitform() {
 
      // document.getElementById('ipaddressform').value
@@ -102,8 +104,8 @@
         var NewDefaultGateway = document.getElementById('defaultgatewayform').value;
        // alert(newID);
         nodes.update({ id: newID, ipaddress: NewIpAddress, mask: NewMask, defaultgateway: NewDefaultGateway, "title": "id: " + newID + "</br>" + "IP address: " + NewIpAddress + "</br>" + "Mask: " + NewMask + "</br>" + "Default Gateway: " + NewDefaultGateway});
-
-        document.getElementById('objectparameters').reset();
+        document.getElementById("objectparameters").submit();
+        return false; 
 
     }
 

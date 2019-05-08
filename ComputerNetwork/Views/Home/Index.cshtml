@@ -1,4 +1,6 @@
-﻿
+﻿@using ComputerNetwork.Models
+@model Computer
+
 @{
     Layout = "_BasicLayout";
     ViewBag.Title = "Computer Network";
@@ -17,16 +19,47 @@
         </div>
         <div id="mynetwork" class="col-md-7"></div>
         <div class="col-md-2">
-            <div>
-                <p id="dispid" style="font-size:90%">Object's ID: </p>
-            </div>
-            <iframe name="votar" style="display:none;"></iframe>
-            <form name="objectparameters" id="objectparameters" onsubmit="javascript:submitform();" method="post" target="votar">
-                <label>IP-Address: <input id="ipaddressform" autocomplete="off" type="text" name="ipaddress" /></label><br />
-                <label>Mask: <input type="text" id="maskform" autocomplete="off" name="mask" /></label><br />
-                <label>Default Gateway: <input id="defaultgatewayform" autocomplete="off" type="text" name="defaultgateway" /></label><br />
-                <input type="submit" value="Submit" />
+            <iframe name="votar" style="display: none;"></iframe>
+
+            <form asp-controller="Home" asp-action="Index" id="objectparameters" method="post" target="votar">
+                <div class="form-group">
+                    <label asp-for="IdOfElement">ID: </label>
+                    <input asp-for="IdOfElement" id="idform" class="form-control clearFields" name="idofelement" autocomplete="off" type="text" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="IpAddress">IP-Address:</label>
+                    <input asp-for="IpAddress" name="ipaddress" class="form-control clearFields" id="ipaddressform" autocomplete="off" type="text" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Mask">Mask:</label>
+                    <input asp-for="Mask" type="text" name="mask" class="form-control clearFields" id="maskform" autocomplete="off" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Gateway">Default Gateway:</label>
+                    <input asp-for="Gateway" class="form-control clearFields" id="defaultgatewayform" name="gateway" autocomplete="off" type="text" />
+                </div>
+                <button type="submit" name="submit" onclick="submitform()" class="btn btn-primary">Add Parameters</button>
             </form>
+
+            <!--form asp-controller="Home" asp-action="Index" class="m-1 p-1" method="post">
+          <div class="form-group">
+              <label asp-for="IdOfElement"></label>
+              <input asp-for="IdOfElement" name="idofelement" class="form-control" />
+          </div>
+          <div class="form-group">
+              <label asp-for="IpAddress"></label>
+              <input asp-for="IpAddress" name="ipaddress" type="text" class="form-control" />
+          </div>
+          <div class="form-group">
+              <label asp-for="Mask"></label>
+              <input asp-for="Mask" name="mask" type="text" class="form-control" />
+          </div>
+          <div class="form-group">
+              <label asp-for="Gateway">dsf</label>
+              <input asp-for="Gateway" name="gateway" type="text" class="form-control" />
+          </div>
+          <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+    </form>//-->
         </div>
     </div>
 </div>

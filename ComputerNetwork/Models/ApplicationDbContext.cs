@@ -10,9 +10,19 @@ namespace ComputerNetwork.Models
     public class ApplicationDbContext :DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+            }
+        }
+
         public DbSet<Router> Routers { get; set; }
         public DbSet<Switch> Switches { get; set; }
         public DbSet<Computer> Computers { get; set; }
         public DbSet<Edge> Edges { get; set; }
+
+
     }
 }
