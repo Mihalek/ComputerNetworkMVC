@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComputerNetwork.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190508214016_Initial")]
+    [Migration("20190509143708_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,13 +26,22 @@ namespace ComputerNetwork.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Gateway");
+                    b.Property<string>("Gateway")
+                        .HasMaxLength(15);
 
-                    b.Property<string>("IdOfElement");
+                    b.Property<string>("IdOfElement")
+                        .IsRequired();
 
-                    b.Property<string>("IpAddress");
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasMaxLength(15);
 
-                    b.Property<string>("Mask");
+                    b.Property<string>("Mask")
+                        .IsRequired()
+                        .HasMaxLength(15);
+
+                    b.Property<string>("NameOfElement")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -45,13 +54,22 @@ namespace ComputerNetwork.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Gateway");
+                    b.Property<string>("Gateway")
+                        .HasMaxLength(15);
 
-                    b.Property<string>("IdOfElement");
+                    b.Property<string>("IdOfElement")
+                        .IsRequired();
 
-                    b.Property<string>("IpAddress");
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasMaxLength(15);
 
-                    b.Property<string>("Mask");
+                    b.Property<string>("Mask")
+                        .IsRequired()
+                        .HasMaxLength(15);
+
+                    b.Property<string>("NameOfElement")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -65,15 +83,20 @@ namespace ComputerNetwork.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Gateway")
-                        .IsRequired();
+                        .HasMaxLength(15);
 
                     b.Property<string>("IdOfElement")
                         .IsRequired();
 
                     b.Property<string>("IpAddress")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(15);
 
                     b.Property<string>("Mask")
+                        .IsRequired()
+                        .HasMaxLength(15);
+
+                    b.Property<string>("NameOfElement")
                         .IsRequired();
 
                     b.HasKey("Id");
@@ -87,13 +110,22 @@ namespace ComputerNetwork.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Gateway");
+                    b.Property<string>("Gateway")
+                        .HasMaxLength(15);
 
-                    b.Property<string>("IdOfElement");
+                    b.Property<string>("IdOfElement")
+                        .IsRequired();
 
-                    b.Property<string>("IpAddress");
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasMaxLength(15);
 
-                    b.Property<string>("Mask");
+                    b.Property<string>("Mask")
+                        .IsRequired()
+                        .HasMaxLength(15);
+
+                    b.Property<string>("NameOfElement")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

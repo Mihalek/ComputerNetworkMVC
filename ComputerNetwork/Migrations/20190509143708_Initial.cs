@@ -13,10 +13,11 @@ namespace ComputerNetwork.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    IdOfElement = table.Column<string>(nullable: true),
-                    IpAddress = table.Column<string>(nullable: true),
-                    Mask = table.Column<string>(nullable: true),
-                    Gateway = table.Column<string>(nullable: true)
+                    NameOfElement = table.Column<string>(nullable: false),
+                    IdOfElement = table.Column<string>(nullable: false),
+                    IpAddress = table.Column<string>(maxLength: 15, nullable: false),
+                    Mask = table.Column<string>(maxLength: 15, nullable: false),
+                    Gateway = table.Column<string>(maxLength: 15, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,10 +30,11 @@ namespace ComputerNetwork.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    IdOfElement = table.Column<string>(nullable: true),
-                    IpAddress = table.Column<string>(nullable: true),
-                    Mask = table.Column<string>(nullable: true),
-                    Gateway = table.Column<string>(nullable: true)
+                    NameOfElement = table.Column<string>(nullable: false),
+                    IdOfElement = table.Column<string>(nullable: false),
+                    IpAddress = table.Column<string>(maxLength: 15, nullable: false),
+                    Mask = table.Column<string>(maxLength: 15, nullable: false),
+                    Gateway = table.Column<string>(maxLength: 15, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,10 +47,11 @@ namespace ComputerNetwork.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    NameOfElement = table.Column<string>(nullable: false),
                     IdOfElement = table.Column<string>(nullable: false),
-                    IpAddress = table.Column<string>(nullable: false),
-                    Mask = table.Column<string>(nullable: false),
-                    Gateway = table.Column<string>(nullable: false)
+                    IpAddress = table.Column<string>(maxLength: 15, nullable: false),
+                    Mask = table.Column<string>(maxLength: 15, nullable: false),
+                    Gateway = table.Column<string>(maxLength: 15, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -61,10 +64,11 @@ namespace ComputerNetwork.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    IdOfElement = table.Column<string>(nullable: true),
-                    IpAddress = table.Column<string>(nullable: true),
-                    Mask = table.Column<string>(nullable: true),
-                    Gateway = table.Column<string>(nullable: true)
+                    NameOfElement = table.Column<string>(nullable: false),
+                    IdOfElement = table.Column<string>(nullable: false),
+                    IpAddress = table.Column<string>(maxLength: 15, nullable: false),
+                    Mask = table.Column<string>(maxLength: 15, nullable: false),
+                    Gateway = table.Column<string>(maxLength: 15, nullable: true)
                 },
                 constraints: table =>
                 {

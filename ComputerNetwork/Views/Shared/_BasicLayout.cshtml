@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="~/css/style.css">
     <script src="~/scripts/vis.js"></script>
     <script src="~/scripts/script.js"></script>
+    <script src="~/scripts/jquery-3.3.1.js"></script>
+    <script src="~/scripts/jquery.validate.min.js"></script>
+    <script src="~/scripts/additional-methods.min.js"></script>
 </head>
 <body>
     <div>
@@ -83,8 +86,15 @@
             clickedid = ids;
             clickedid2 = ids2;
             helpid = clickedid;
-            document.getElementById("idform").value = helpid.toString(32);
+            document.getElementById("objectparameters").reset();
             document.getElementById("nameofelementform").value = nodes.get(clickedid)[0].label.toString(32);
+            document.getElementById("ipaddressform").value = nodes.get(clickedid)[0].ipaddress.toString(32);
+            document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
+            document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
+            document.getElementById("defaultgatewayform").value = nodes.get(clickedid)[0].defaultgateway.toString(32);
+            document.getElementById("idform").value = helpid.toString(32);
+            
+            
             //console.log(nodes.get(clickedid)[0].title);
             console.log(nodes.get(clickedid)[0]);
         });
@@ -105,8 +115,10 @@
         var NewDefaultGateway = document.getElementById('defaultgatewayform').value;
        // alert(newID);
         nodes.update({ id: newID, ipaddress: NewIpAddress, mask: NewMask, defaultgateway: NewDefaultGateway, "title": "id: " + newID + "</br>" + "IP address: " + NewIpAddress + "</br>" + "Mask: " + NewMask + "</br>" + "Default Gateway: " + NewDefaultGateway});
+        
         document.getElementById("objectparameters").submit();
-        return false; 
+        return false;
+   
 
     }
 
@@ -119,19 +131,19 @@
     function addComputer() {
         var newId = (Math.random() * 1e7).toString(32);
         nodes.add({
-            id: newId, label: "Computer",ipaddress: "" ,mask: "" , defaultgateway: "" , image: "img/computer.png", shape: "image", "title": "id: " + newId + "</br>" + "IP address: "+"</br>"+ "Mask: " +"</br>"+"Default Gateway: "});       
+            id: newId, label: "Computer".toString(32) ,ipaddress: "" ,mask: "" , defaultgateway: "" , image: "img/computer.png", shape: "image", "title": "id: " + newId + "</br>" + "IP address: "+"</br>"+ "Mask: " +"</br>"+"Default Gateway: "});       
         nodeIds.push(newId);
     } 
 
     function addRouter() {
         var newId = (Math.random() * 1e7).toString(32);
-        nodes.add({ id: newId, label: "Router", ipaddress: "", mask: "", defaultgateway: "", image: "img/Router.jpg", shape: "image", "title": "id: " + newId + "</br>" + "IP address: " + "</br>" + "Mask: " + "</br>" + "Default Gateway: " });
+        nodes.add({ id: newId, label: "Router".toString(32), ipaddress: "", mask: "", defaultgateway: "", image: "img/Router.jpg", shape: "image", "title": "id: " + newId + "</br>" + "IP address: " + "</br>" + "Mask: " + "</br>" + "Default Gateway: " });
         nodeIds.push(newId);
     }
 
     function addSwitch() {
         var newId = (Math.random() * 1e7).toString(32);
-        nodes.add({ id: newId, label: "Switch", ipaddress: "", mask: "", defaultgateway: "", image: "img/Switch.jpg", shape: "image", "title": "id: " + newId + "</br>" + "IP address: " + "</br>" + "Mask: " + "</br>" + "Default Gateway: " });
+        nodes.add({ id: newId, label: "Switch".toString(32), ipaddress: "", mask: "", defaultgateway: "", image: "img/Switch.jpg", shape: "image", "title": "id: " + newId + "</br>" + "IP address: " + "</br>" + "Mask: " + "</br>" + "Default Gateway: " });
 
         nodeIds.push(newId);
     }

@@ -23,7 +23,12 @@ namespace ComputerNetwork
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:ComputerNetwork:ConnectionString"]));
            // services.AddSingleton<IRouterRepository, FakeRouterRepository>();
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.MaxModelValidationErrors = 50;
+                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+                    (_) => "The field is required.");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

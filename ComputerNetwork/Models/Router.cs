@@ -11,13 +11,20 @@ namespace ComputerNetwork.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Name of Object is required")]
+        public string NameOfElement { get; set; }
+        [Required(ErrorMessage = "ID of Object is required")]
         public string IdOfElement { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Ip Address of Object is required")]
+        [StringLength(15)]
+        [RegularExpression(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", ErrorMessage = "Invalid Format")]
         public string IpAddress { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Mask of Object is required")]
+        [StringLength(15)]
+        [RegularExpression(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", ErrorMessage = "Invalid Format")]
         public string Mask { get; set; }
-        [Required]
+        [StringLength(15)]
+        [RegularExpression(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", ErrorMessage = "Invalid Format")]
         public string Gateway { get; set; }
     }
 }

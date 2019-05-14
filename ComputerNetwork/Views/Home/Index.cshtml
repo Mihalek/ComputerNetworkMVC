@@ -1,5 +1,8 @@
-﻿@using ComputerNetwork.Models
-@model Computer
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, MyWebApp
+@using ComputerNetwork.Models
+@model Router
+
 
 @{
     Layout = "_BasicLayout";
@@ -9,7 +12,7 @@
 <div class="container">
     <div class="form-row">
         <div class="col-md-3 justify-content-center btn-group-vertical" role="group">
-            <button type="button" id="routerbuttonid" class="btn btn-secondary" asp-action="AddRouter" onclick="addRouter()">Router</button>
+            <button type="button" id="routerbuttonid" class="btn btn-secondary" onclick="addRouter()">Router</button>
             <button type="button" id="switchbuttonid" class="btn btn-secondary" onclick="addSwitch()">Switch</button>
             <button type="button" id="computerbuttonid" class="btn btn-secondary" onclick="addComputer()">Computer</button>
             <button type="button" id="connectbuttonid" class="btn btn-secondary" onclick="addConnection()">Connect</button>
@@ -19,52 +22,38 @@
         </div>
         <div id="mynetwork" class="col-md-7"></div>
         <div class="col-md-2">
-            <iframe name="votar" style="display: none;"></iframe>
-
-            <form asp-controller="Home" asp-action="Index" id="objectparameters" method="post" target="votar">
+            <iframe name="votar" style="display: none"></iframe>
+            <form asp-controller="Home" asp-action="Index" id="objectparameters" method="post">
+                <div asp-validation-summary="ModelOnly"></div>
                 <div class="form-group">
-                    <label asp-for="NameofElement">Name: </label>
-                    <input asp-for="NameofElement" id="nameofelementform" class="form-control" name="nameofelement" autocomplete="off" type="text" readonly />
+                    <label asp-for="NameOfElement" class="control-label">Name: </label>
+                    <input asp-for="NameOfElement" id="nameofelementform" class="form-control" name="nameofelement" autocomplete="off" type="text" readonly>
+                    <span asp-validation-for="NameOfElement" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="IdOfElement">ID: </label>
-                    <input asp-for="IdOfElement" id="idform" class="form-control" name="idofelement" autocomplete="off" type="text" readonly />
+                    <label asp-for="IdOfElement" class="control-label">ID: </label>
+                    <input asp-for="IdOfElement" id="idform" class="form-control" name="idofelement" autocomplete="off" type="text" readonly>
+                    <span asp-validation-for="IdOfElement" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="IpAddress">IP-Address:</label>
-                    <input asp-for="IpAddress" name="ipaddress" class="form-control" id="ipaddressform" autocomplete="off" type="text" />
+                    <label asp-for="IpAddress" class="control-label">IP-Address:</label>
+                    <input asp-for="IpAddress" name="ipaddress" class="form-control" id="ipaddressform" autocomplete="off" type="text">
+                    <span asp-validation-for="IpAddress" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Mask">Mask:</label>
-                    <input asp-for="Mask" type="text" name="mask" class="form-control" id="maskform" autocomplete="off" />
+                    <label asp-for="Mask" class="control-label">Mask:</label>
+                    <input asp-for="Mask" type="text" name="mask" class="form-control" id="maskform" autocomplete="off">
+                    <span asp-validation-for="Mask" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Gateway">Default Gateway:</label>
-                    <input asp-for="Gateway" class="form-control" id="defaultgatewayform" name="gateway" autocomplete="off" type="text" />
+                    <label asp-for="Gateway" class="control-label">Default Gateway:</label>
+                    <input asp-for="Gateway" class="form-control" id="defaultgatewayform" name="gateway" autocomplete="off" type="text">
+                    <span asp-validation-for="Gateway" class="text-danger"></span>
                 </div>
-                <button type="submit" name="submit" onclick="submitform()" class="btn btn-primary">Add Parameters</button>
+                <button type="submit" name="btnSubmit" onclick="submitform()" class="btn btn-primary">Submit</button>
             </form>
-
-            <!--form asp-controller="Home" asp-action="Index" class="m-1 p-1" method="post">
-          <div class="form-group">
-              <label asp-for="IdOfElement"></label>
-              <input asp-for="IdOfElement" name="idofelement" class="form-control" />
-          </div>
-          <div class="form-group">
-              <label asp-for="IpAddress"></label>
-              <input asp-for="IpAddress" name="ipaddress" type="text" class="form-control" />
-          </div>
-          <div class="form-group">
-              <label asp-for="Mask"></label>
-              <input asp-for="Mask" name="mask" type="text" class="form-control" />
-          </div>
-          <div class="form-group">
-              <label asp-for="Gateway">dsf</label>
-              <input asp-for="Gateway" name="gateway" type="text" class="form-control" />
-          </div>
-          <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-    </form>//-->
         </div>
     </div>
 </div>
+
 
