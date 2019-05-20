@@ -17,13 +17,12 @@
             <button type="button" id="computerbuttonid" class="btn btn-secondary" onclick="addComputer()">Computer</button>
             <button type="button" id="connectbuttonid" class="btn btn-secondary" onclick="addConnection()">Connect</button>
             <button type="button" id="deletebuttonid" class="btn btn-secondary" onclick="deleteItem()">Delete Item</button>
-            <button type="button" id="deletebuttonid" class="btn btn-secondary" onclick="deleteEdge()">Delete Edge</button>
-            <button type="button" id="cleancanvasbuttonid" class="btn btn-secondary" onclick="resetAllNodes()">Clean</button>
+            <button type="button" id="deleteedgebuttonid" class="btn btn-secondary" onclick="deleteEdge()">Delete Edge</button>
         </div>
         <div id="mynetwork" class="col-md-7"></div>
         <div class="col-md-2">
             <iframe name="votar" style="display: none"></iframe>
-            <form asp-controller="Home" asp-action="Index" id="objectparameters" method="post">
+            <form asp-controller="Home" style="display: inline-block;" id="objectparameters" method="post" target="votar">
                 <div asp-validation-summary="ModelOnly"></div>
                 <div class="form-group">
                     <label asp-for="NameOfElement" class="control-label">Name: </label>
@@ -50,7 +49,9 @@
                     <input asp-for="Gateway" class="form-control" id="defaultgatewayform" name="gateway" autocomplete="off" type="text">
                     <span asp-validation-for="Gateway" class="text-danger"></span>
                 </div>
-                <button type="submit" name="btnSubmit" onclick="submitform()" class="btn btn-primary">Submit</button>
+                <button type="submit" asp-action="Index" name="btnSubmit" onclick="submitform()" class="btn btn-primary">Submit</button>
+                <button type="submit" asp-action="Delete" id="deletebuttonid" class="btn btn-secondary" onclick="deleteItem()">Delete Item</button>
+                <button type="submit" asp-action="Clean" id="cleancanvasbuttonid" class="btn btn-warning" onclick="resetAllNodes()">Clean</button>
             </form>
         </div>
     </div>

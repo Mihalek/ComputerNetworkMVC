@@ -158,6 +158,7 @@
     }
 
     function resetAllNodes() {
+        document.getElementById("objectparameters").submit();
         nodes.clear();
         edges.clear();
         nodes.add(nodesArray);
@@ -169,8 +170,9 @@
     }
 
     function deleteItem() {
-        nodes.remove(clickedid);
 
+        document.getElementById("objectparameters").submit();
+        nodes.remove(clickedid);
     }
 
     function resetAll() {
