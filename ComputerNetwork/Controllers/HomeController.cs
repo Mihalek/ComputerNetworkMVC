@@ -23,6 +23,39 @@ namespace ComputerNetwork.Controllers
 
         }
 
+
+        [HttpPost]
+        public IActionResult Save([FromBody]IEnumerable<Polaczenia> polaczenia)
+        {
+
+            return Json("{jestem},{tutaj}");
+        }
+
+        public class Polaczenia{
+            string from { get; set; }
+            string to { get; set; }
+            string id { get; set; }
+
+            }
+
+        [HttpGet]
+        public JsonResult Test()
+        {
+            var obiekt = new Router()
+            {
+                Id= 124,
+                IdOfElement="sagasg",
+                IpAddress="192.168.0.1",
+                Mask="255.255.255.0",
+                Gateway="192.168.0.2",
+                NameOfElement="Router"
+                
+
+            };
+
+            return Json(obiekt);
+        }
+
         [HttpPost]
         public IActionResult Clean()
         {

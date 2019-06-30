@@ -21,6 +21,8 @@
 
 <script>
     var nodeIds, shadowState, nodesArray, nodes, edgesArray, edges, network;
+    var schematy = [];
+    var polaczenia = [];
     var clickedid, clickedid2;
     var helpid;
     var idrouter, idcomputer, idswitch = 0;
@@ -40,6 +42,131 @@
         return idcomputer;
     }
 
+    function save() {
+        var Polaczenia = {};
+        var i = 0
+            for (var key in edges._data) {
+                var value = edges._data[key];
+                Polaczenia[i]=value;
+                i++;
+        }
+        var Obiekty = {};
+        var i = 0
+        for (var key in nodes._data) {
+            var value = nodes._data[key];
+            Obiekty[i] = value;
+            i++;
+        }
+
+        $.ajax({
+            url: 'Home/Save',
+            data: JSON.stringify(Polaczenia),
+            contentType: 'application/json',
+            type: 'POST',
+            success: function (data) {
+                console.log("wyslano");
+            }
+        });
+
+
+
+
+ 
+       
+
+
+        /*
+        console.log(nodes);
+        console.log(edges);
+        var pomoc1 = new vis.DataSet([]);
+        var pomoc2 = new vis.DataSet([]);
+        nodes.forEach(function (node) {
+            pomoc1.add(node);
+        }); 
+        edges.forEach(function (edge) {
+            pomoc2.add(edge);
+        });
+        schematy = [];
+        polaczenia = [];
+        schematy.push(pomoc1);
+        polaczenia.push(pomoc2);
+
+        console.log(schematy[0]);
+        console.log(polaczenia[0]);
+       */
+    }
+    function test() {
+        $.ajax({
+            type: "GET",
+            url: "Home/Test",
+           //data: Json,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (response) {
+                alert("error");
+            }
+            
+        })
+    }
+
+    function draw() {
+        nodes.clear();
+        edges.clear();
+        schematy[0].forEach(function (node) {
+            nodes.add(node);
+        });
+        polaczenia[0].forEach(function (edge) {
+            edges.add(edge);
+        });
+
+
+        container = document.getElementById('mynetwork');
+        var graph = { nodes: nodes, edges: edges};
+        var options = {
+            manipulation: {
+                enabled: false,
+                addEdge: function (data, callback) {
+                    console.log('add edge!', data);
+                    callback(data);
+                }
+            },
+            interaction:
+            {
+                hover: true
+            }
+        };
+        network = new vis.Network(container, graph, options);
+
+        network.on('click', function (properties) {
+            var ids = properties.nodes;
+            var ids2 = properties.edges;
+            var clickedNodes = nodes.get(ids);
+            var clickedNodes2 = edges.get(ids2);
+            clickedid = ids;
+            clickedid2 = ids2;
+            helpid = clickedid;
+            document.getElementById("objectparameters").reset();
+            document.getElementById("nameofelementform").value = nodes.get(clickedid)[0].label.toString(32);
+            document.getElementById("ipaddressform").value = nodes.get(clickedid)[0].ipaddress.toString(32);
+            document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
+            document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
+            document.getElementById("defaultgatewayform").value = nodes.get(clickedid)[0].defaultgateway.toString(32);
+            document.getElementById("idform").value = helpid.toString(32);
+
+
+            //console.log(nodes.get(clickedid)[0].title);
+            console.log(nodes.get(clickedid)[0]);
+        });
+        network.on("hoverNode", function (params) {
+            network.canvas.body.container.style.cursor = 'pointer';
+        });
+        window.onresize = function () { network.fit(); }
+
+
+    }
 
     function startNetwork() {
         // this list is kept to remove a random node.. we do not add node 1 here because it's used for changes
@@ -70,6 +197,11 @@
                 addEdge: function (data, callback) {
                     console.log('add edge!', data);
                     callback(data);
+                    var dataobject = JSON.stringify({
+                        'from': data.from, 'to': data.to, 'id': data.id
+             
+                    });
+
                 }
             },
             interaction:
@@ -77,6 +209,7 @@
                 hover: true
             }
         };
+
         network = new vis.Network(container, data, options);
         network.on('click', function (properties) {
             var ids = properties.nodes;
@@ -173,6 +306,7 @@
 
         document.getElementById("objectparameters").submit();
         nodes.remove(clickedid);
+        console.log(schematy);
     }
 
     function resetAll() {
