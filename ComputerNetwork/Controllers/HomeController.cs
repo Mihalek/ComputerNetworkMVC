@@ -22,6 +22,82 @@ namespace ComputerNetwork.Controllers
 
 
         }
+        [HttpGet]
+        public async Task<JsonResult> GetNetworksNames()
+        {
+            var networks = from c in _context.Networks
+                           select new { key = c.Id, value = c.NameOfNetwork, date =c.DateOfAdd };
+            
+            return Json(networks);
+        }
+
+
+        [HttpGet]
+        public async Task<JsonResult> GetNetwork(string mystring)
+        {
+
+            var routers = from c in _context.Routers
+                          where c.NameOfNetwork == mystring
+                          select new {
+                              ipaddress = c.IpAddress,
+                              mask = c.Mask,
+                              defaultgateway = c.Gateway,
+                              id = c.IdOfElement,
+                              shape = c.Shape,
+                              title = c.Title,
+                              nameofelement = c.Label,
+                              image = c.Image,
+                              label = c.Label,
+                              nazwasieci = c.NameOfNetwork,
+                              dateofadd = c.DateOfAdd
+                          };
+            
+            var switches = from c in _context.Switches
+                           where c.NameOfNetwork == mystring
+                           select new
+                           {
+                               ipaddress = c.IpAddress,
+                               mask = c.Mask,
+                               defaultgateway = c.Gateway,
+                               id = c.IdOfElement,
+                               shape = c.Shape,
+                               title = c.Title,
+                               nameofelement = c.Label,
+                               image = c.Image,
+                               label = c.Label,
+                               nazwasieci = c.NameOfNetwork,
+                               dateofadd = c.DateOfAdd
+                           };
+            var computers = from c in _context.Computers
+                            where c.NameOfNetwork == mystring
+                            select new
+                            {
+                                ipaddress = c.IpAddress,
+                                mask = c.Mask,
+                                defaultgateway = c.Gateway,
+                                id = c.IdOfElement,
+                                shape = c.Shape,
+                                title = c.Title,
+                                nameofelement = c.Label,
+                                image = c.Image,
+                                label = c.Label,
+                                nazwasieci = c.NameOfNetwork,
+                                dateofadd = c.DateOfAdd
+                            };
+            var edges = from c in _context.Edges
+                        where c.NameOfNetwork==mystring
+                        select new
+                        {
+                            to = c.To,
+                            nazwasieci = c.NameOfNetwork,
+                            dateofadd = c.DateOfAdd,
+                            @from = c.From
+                        };
+            var Result = new { Routers = routers, Switches = switches, Computers = computers, Edges = edges };
+            return Json(Result);
+        }
+
+
 
 
         [HttpPost]
@@ -33,7 +109,7 @@ namespace ComputerNetwork.Controllers
             */
             Network network = new Network
             {
-                NameOfNetwork = postData.nazwasieci,
+                NameOfNetwork = postData.nazwasieci + " " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
                 DateOfAdd = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")
                           
             };
@@ -64,7 +140,7 @@ namespace ComputerNetwork.Controllers
                                 NameOfElement = element.label.ToString(),
                                 Image = element.image.ToString(),
                                 Label = element.label.ToString(),
-                                NameOfNetwork = postData.nazwasieci.ToString(),
+                                NameOfNetwork = postData.nazwasieci.ToString()+" "+DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
                                 DateOfAdd = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")
 
                             };
@@ -92,7 +168,7 @@ namespace ComputerNetwork.Controllers
                                 NameOfElement = element.label.ToString(),
                                 Image = element.image.ToString(),
                                 Label = element.label.ToString(),
-                                NameOfNetwork = postData.nazwasieci.ToString(),
+                                NameOfNetwork = postData.nazwasieci.ToString() + " " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
                                 DateOfAdd = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")
 
                             };
@@ -121,7 +197,7 @@ namespace ComputerNetwork.Controllers
                                 NameOfElement = element.label.ToString(),
                                 Image = element.image.ToString(),
                                 Label = element.label.ToString(),
-                                NameOfNetwork = postData.nazwasieci.ToString(),
+                                NameOfNetwork = postData.nazwasieci.ToString() + " " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
                                 DateOfAdd = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")
 
                             };
@@ -151,7 +227,7 @@ namespace ComputerNetwork.Controllers
                         From = element.from.ToString(),
                         To = element.to.ToString(),
                         DateOfAdd = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
-                        NameOfNetwork = postData.nazwasieci.ToString()
+                        NameOfNetwork = postData.nazwasieci.ToString() + " " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")
 
                     };
                         await _context.Edges.AddAsync(edge);

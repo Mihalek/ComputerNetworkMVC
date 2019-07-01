@@ -45,16 +45,16 @@
     function save() {
         var Polaczenia = [];
         var i = 0
-            for (var key in edges._data) {
-                var value = edges._data[key];
-                Polaczenia.push(value);
+        for (var key in edges._data) {
+            var value = edges._data[key];
+            Polaczenia.push(value);
         }
         var Obiekty = [];
         var i = 0
         for (var key in nodes._data) {
             var value = nodes._data[key];
             Obiekty.push(value);
-      
+
         }
         console.log(Polaczenia);
         console.log(Obiekty);
@@ -68,6 +68,7 @@
 
 
 
+
         $.ajax({
             url: 'Home/Save',
             data: JSON.stringify(PostData),
@@ -75,40 +76,21 @@
             type: 'POST',
             success: function (data) {
                 console.log("wyslano");
+
             }
         });
 
 
+    }
 
 
  
        
-
-
-        /*
-        console.log(nodes);
-        console.log(edges);
-        var pomoc1 = new vis.DataSet([]);
-        var pomoc2 = new vis.DataSet([]);
-        nodes.forEach(function (node) {
-            pomoc1.add(node);
-        }); 
-        edges.forEach(function (edge) {
-            pomoc2.add(edge);
-        });
-        schematy = [];
-        polaczenia = [];
-        schematy.push(pomoc1);
-        polaczenia.push(pomoc2);
-
-        console.log(schematy[0]);
-        console.log(polaczenia[0]);
-       */
-    }
+    
     function test() {
         $.ajax({
             type: "GET",
-            url: "Home/Test",
+            url: "Home/GetNetworksNames",
            //data: Json,
             contentType: "application/json",
             dataType: "json",
@@ -123,6 +105,9 @@
     }
 
     function draw() {
+
+        /*
+
         nodes.clear();
         edges.clear();
         schematy[0].forEach(function (node) {
@@ -131,7 +116,32 @@
         polaczenia[0].forEach(function (edge) {
             edges.add(edge);
         });
+        */
+        var szukam = document.getElementById("NetworkSchemas").value.toString();
+    
+        nodes = {}
+        edges = {}
+        $.ajax({
+            type: "GET",
+            url: "Home/GetNetwork",
+            data: { mystring: szukam },
+            contentType: "application/json",
+            dataType: "json",
+            success: function (result) {
+                nodes = Object.assign(result.routers,result.switches,result.computers);         
+                edges = Object.assign(result.edges);
+            },
+            error: function (response) {
+                alert("error");
+            }
 
+        })
+
+        console.log(nodes);
+        console.log(edges);
+
+
+       
 
         container = document.getElementById('mynetwork');
         var graph = { nodes: nodes, edges: edges};
@@ -177,6 +187,41 @@
 
 
     }
+
+    $(function () {
+
+        $.ajax({
+            type: "GET",
+            url: "Home/GetNetworksNames",
+            //data: Json,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (response) {
+                alert("error");
+            }
+
+        }).done(function (result) {
+            if (result.length > 0) {
+                $('#NetworkSchemas').html('');
+                var options = '';
+                options += '<';
+                for (var i = 0; i < result.length; i++) {
+                    options += '<option value="' + result[i].value + '">' + result[i].value + '</option>';
+                }
+                $('#NetworkSchemas').append(options);
+
+            }
+        }).fail(function (error) {
+            alert(error.StatusText);
+        });
+    });
+
+       
+        
+   
 
     function startNetwork() {
         // this list is kept to remove a random node.. we do not add node 1 here because it's used for changes
