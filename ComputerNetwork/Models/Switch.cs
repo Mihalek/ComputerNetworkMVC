@@ -10,6 +10,8 @@ namespace ComputerNetwork.Models
     {
         [Key]
         public int Id { get; set; }
+        public string NameOfNetwork { get; set; }
+        public string DateOfAdd { get; set; }
         [Required(ErrorMessage = "Name of Object is required")]
         public string NameOfElement { get; set; }
         [Required(ErrorMessage = "ID of Object is required")]
@@ -25,5 +27,11 @@ namespace ComputerNetwork.Models
         [StringLength(15)]
         [RegularExpression(@"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", ErrorMessage = "Invalid Format")]
         public string Gateway { get; set; }
+        public string Image { get; set; }
+        public string Label { get; set; }
+        public string Shape { get; set; }
+        public string Title { get; set; }
+
+
     }
 }

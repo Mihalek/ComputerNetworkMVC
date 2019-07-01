@@ -59,8 +59,9 @@
         console.log(Polaczenia);
         console.log(Obiekty);
 
-
+        var nameofnetwork = document.getElementById("nameofnetwork").value.toString();
         var PostData = {
+            NazwaSieci: nameofnetwork,
             Polaczenia: Polaczenia,
             Obiekty: Obiekty
         };

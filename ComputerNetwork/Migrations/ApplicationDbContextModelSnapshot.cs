@@ -24,15 +24,21 @@ namespace ComputerNetwork.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("DateOfAdd");
+
                     b.Property<string>("Gateway")
                         .HasMaxLength(15);
 
                     b.Property<string>("IdOfElement")
                         .IsRequired();
 
+                    b.Property<string>("Image");
+
                     b.Property<string>("IpAddress")
                         .IsRequired()
                         .HasMaxLength(15);
+
+                    b.Property<string>("Label");
 
                     b.Property<string>("Mask")
                         .IsRequired()
@@ -40,6 +46,12 @@ namespace ComputerNetwork.Migrations
 
                     b.Property<string>("NameOfElement")
                         .IsRequired();
+
+                    b.Property<string>("NameOfNetwork");
+
+                    b.Property<string>("Shape");
+
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
@@ -52,26 +64,32 @@ namespace ComputerNetwork.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Gateway")
-                        .HasMaxLength(15);
+                    b.Property<string>("DateOfAdd");
 
-                    b.Property<string>("IdOfElement")
-                        .IsRequired();
+                    b.Property<string>("From");
 
-                    b.Property<string>("IpAddress")
-                        .IsRequired()
-                        .HasMaxLength(15);
+                    b.Property<string>("NameOfNetwork");
 
-                    b.Property<string>("Mask")
-                        .IsRequired()
-                        .HasMaxLength(15);
-
-                    b.Property<string>("NameOfElement")
-                        .IsRequired();
+                    b.Property<string>("To");
 
                     b.HasKey("Id");
 
                     b.ToTable("Edges");
+                });
+
+            modelBuilder.Entity("ComputerNetwork.Models.Network", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DateOfAdd");
+
+                    b.Property<string>("NameOfNetwork");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Networks");
                 });
 
             modelBuilder.Entity("ComputerNetwork.Models.Router", b =>
@@ -80,15 +98,21 @@ namespace ComputerNetwork.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("DateOfAdd");
+
                     b.Property<string>("Gateway")
                         .HasMaxLength(15);
 
                     b.Property<string>("IdOfElement")
                         .IsRequired();
 
+                    b.Property<string>("Image");
+
                     b.Property<string>("IpAddress")
                         .IsRequired()
                         .HasMaxLength(15);
+
+                    b.Property<string>("Label");
 
                     b.Property<string>("Mask")
                         .IsRequired()
@@ -96,6 +120,12 @@ namespace ComputerNetwork.Migrations
 
                     b.Property<string>("NameOfElement")
                         .IsRequired();
+
+                    b.Property<string>("NameOfNetwork");
+
+                    b.Property<string>("Shape");
+
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
@@ -108,15 +138,21 @@ namespace ComputerNetwork.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("DateOfAdd");
+
                     b.Property<string>("Gateway")
                         .HasMaxLength(15);
 
                     b.Property<string>("IdOfElement")
                         .IsRequired();
 
+                    b.Property<string>("Image");
+
                     b.Property<string>("IpAddress")
                         .IsRequired()
                         .HasMaxLength(15);
+
+                    b.Property<string>("Label");
 
                     b.Property<string>("Mask")
                         .IsRequired()
@@ -124,6 +160,12 @@ namespace ComputerNetwork.Migrations
 
                     b.Property<string>("NameOfElement")
                         .IsRequired();
+
+                    b.Property<string>("NameOfNetwork");
+
+                    b.Property<string>("Shape");
+
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 

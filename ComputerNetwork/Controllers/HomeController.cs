@@ -25,14 +25,148 @@ namespace ComputerNetwork.Controllers
 
 
         [HttpPost]
-        public JsonResult Save([FromBody] PostData postData)
+        public async Task<IActionResult> Save([FromBody] PostData postData)
         {
-            System.Diagnostics.Debug.WriteLine(postData.obiekty);
-            return Json(postData);
+            /*
+            string id = HttpContext.Request.Form["idofelement"].ToString();
+            string item = HttpContext.Request.Form["nameofelement"].ToString();
+            */
+            Network network = new Network
+            {
+                NameOfNetwork = postData.nazwasieci,
+                DateOfAdd = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")
+                          
+            };
+            await _context.Networks.AddAsync(network);
+            await _context.SaveChangesAsync();
+
+
+
+            foreach (var element in postData.obiekty)
+            {
+                if (ModelState.IsValid)
+                {
+                    bool contactExists;
+                    string item = element.label.ToString();
+                    string id = element.id.ToString();
+                    switch (item)
+                    {
+                        case "Router":
+                            contactExists = _context.Routers.Any(r => r.IdOfElement.Equals(id));
+                            Router router = new Router
+                            {
+                                IpAddress = element.ipaddress.ToString(),
+                                Mask = element.mask.ToString(),
+                                Gateway = element.defaultgateway.ToString(),
+                                IdOfElement = element.id.ToString(),
+                                Shape = element.shape.ToString(),
+                                Title = element.title.ToString(),
+                                NameOfElement = element.label.ToString(),
+                                Image = element.image.ToString(),
+                                Label = element.label.ToString(),
+                                NameOfNetwork = postData.nazwasieci.ToString(),
+                                DateOfAdd = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")
+
+                            };
+                            if (!contactExists)
+                            {
+                                await _context.Routers.AddAsync(router);
+                                await _context.SaveChangesAsync();
+                                continue;
+                            }
+                            else 
+                            {
+                                continue;
+                            }
+                            
+                        case "Switch":
+                            contactExists = _context.Switches.Any(s => s.IdOfElement.Equals(id));
+                            Switch @switch = new Switch
+                            {
+                                IpAddress = element.ipaddress.ToString(),
+                                Mask = element.mask.ToString(),
+                                Gateway = element.defaultgateway.ToString(),
+                                IdOfElement = element.id.ToString(),
+                                Shape = element.shape.ToString(),
+                                Title = element.title.ToString(),
+                                NameOfElement = element.label.ToString(),
+                                Image = element.image.ToString(),
+                                Label = element.label.ToString(),
+                                NameOfNetwork = postData.nazwasieci.ToString(),
+                                DateOfAdd = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")
+
+                            };
+                            if (!contactExists)
+                            {
+                                await _context.Switches.AddAsync(@switch);
+                                await _context.SaveChangesAsync();
+                                continue;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+
+
+                        case "Computer":
+                            contactExists = _context.Computers.Any(c => c.IdOfElement.Equals(id));
+                            Computer computer = new Computer
+                            {
+                                IpAddress = element.ipaddress.ToString(),
+                                Mask = element.mask.ToString(),
+                                Gateway = element.defaultgateway.ToString(),
+                                IdOfElement = element.id.ToString(),
+                                Shape = element.shape.ToString(),
+                                Title = element.title.ToString(),
+                                NameOfElement = element.label.ToString(),
+                                Image = element.image.ToString(),
+                                Label = element.label.ToString(),
+                                NameOfNetwork = postData.nazwasieci.ToString(),
+                                DateOfAdd = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")
+
+                            };
+                            if (!contactExists)
+                            {
+                                await _context.Computers.AddAsync(computer);
+                                await _context.SaveChangesAsync();
+                                continue;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+
+
+
+                    }
+                }
+            }
+
+
+            foreach (var element in postData.polaczenia)
+            {
+              
+                    Edge edge = new Edge
+                    {
+                        From = element.from.ToString(),
+                        To = element.to.ToString(),
+                        DateOfAdd = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
+                        NameOfNetwork = postData.nazwasieci.ToString()
+
+                    };
+                        await _context.Edges.AddAsync(edge);
+                        await _context.SaveChangesAsync();
+
+            }
+
+
+
+            return RedirectToAction("Index");
         }
 
         public class PostData
         {
+            public string nazwasieci { get; set; }
             public List<Polaczenia> polaczenia { get; set; }
             public List<Obiekty> obiekty { get; set; }
         }
@@ -74,6 +208,7 @@ namespace ComputerNetwork.Controllers
             return Json(obiekt);
         }
 
+        /*
         [HttpPost]
         public IActionResult Clean()
         {
@@ -85,7 +220,7 @@ namespace ComputerNetwork.Controllers
             return RedirectToAction("Index");
         }
 
-
+        
         [HttpPost]
         public IActionResult Delete()
         {
@@ -151,6 +286,7 @@ namespace ComputerNetwork.Controllers
         }
 
 
+        /*
         [HttpPost]
         public async Task<IActionResult> Index(Router router, Computer computer, Edge edge, Switch @switch)
         {
@@ -241,10 +377,9 @@ namespace ComputerNetwork.Controllers
                 }
             }
             return View();
-
+            */
 
 
         }
 
     }
-}

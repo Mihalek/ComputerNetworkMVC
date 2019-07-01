@@ -22,6 +22,7 @@ namespace ComputerNetwork.Models
         public DbSet<Switch> Switches { get; set; }
         public DbSet<Computer> Computers { get; set; }
         public DbSet<Edge> Edges { get; set; }
+        public DbSet<Network> Networks { get; set; }
 
 
     }

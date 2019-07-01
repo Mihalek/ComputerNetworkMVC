@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ComputerNetwork.Migrations
 {
-    public partial class Initial : Migration
+    public partial class migrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,11 +13,17 @@ namespace ComputerNetwork.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    NameOfNetwork = table.Column<string>(nullable: true),
+                    DateOfAdd = table.Column<string>(nullable: true),
                     NameOfElement = table.Column<string>(nullable: false),
                     IdOfElement = table.Column<string>(nullable: false),
                     IpAddress = table.Column<string>(maxLength: 15, nullable: false),
                     Mask = table.Column<string>(maxLength: 15, nullable: false),
-                    Gateway = table.Column<string>(maxLength: 15, nullable: true)
+                    Gateway = table.Column<string>(maxLength: 15, nullable: true),
+                    Image = table.Column<string>(nullable: true),
+                    Label = table.Column<string>(nullable: true),
+                    Shape = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,15 +36,28 @@ namespace ComputerNetwork.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    NameOfElement = table.Column<string>(nullable: false),
-                    IdOfElement = table.Column<string>(nullable: false),
-                    IpAddress = table.Column<string>(maxLength: 15, nullable: false),
-                    Mask = table.Column<string>(maxLength: 15, nullable: false),
-                    Gateway = table.Column<string>(maxLength: 15, nullable: true)
+                    From = table.Column<string>(nullable: true),
+                    To = table.Column<string>(nullable: true),
+                    NameOfNetwork = table.Column<string>(nullable: true),
+                    DateOfAdd = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Edges", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Networks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    NameOfNetwork = table.Column<string>(nullable: true),
+                    DateOfAdd = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Networks", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,11 +66,17 @@ namespace ComputerNetwork.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    NameOfNetwork = table.Column<string>(nullable: true),
+                    DateOfAdd = table.Column<string>(nullable: true),
                     NameOfElement = table.Column<string>(nullable: false),
                     IdOfElement = table.Column<string>(nullable: false),
                     IpAddress = table.Column<string>(maxLength: 15, nullable: false),
                     Mask = table.Column<string>(maxLength: 15, nullable: false),
-                    Gateway = table.Column<string>(maxLength: 15, nullable: true)
+                    Gateway = table.Column<string>(maxLength: 15, nullable: true),
+                    Image = table.Column<string>(nullable: true),
+                    Label = table.Column<string>(nullable: true),
+                    Shape = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -64,11 +89,17 @@ namespace ComputerNetwork.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    NameOfNetwork = table.Column<string>(nullable: true),
+                    DateOfAdd = table.Column<string>(nullable: true),
                     NameOfElement = table.Column<string>(nullable: false),
                     IdOfElement = table.Column<string>(nullable: false),
                     IpAddress = table.Column<string>(maxLength: 15, nullable: false),
                     Mask = table.Column<string>(maxLength: 15, nullable: false),
-                    Gateway = table.Column<string>(maxLength: 15, nullable: true)
+                    Gateway = table.Column<string>(maxLength: 15, nullable: true),
+                    Image = table.Column<string>(nullable: true),
+                    Label = table.Column<string>(nullable: true),
+                    Shape = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -83,6 +114,9 @@ namespace ComputerNetwork.Migrations
 
             migrationBuilder.DropTable(
                 name: "Edges");
+
+            migrationBuilder.DropTable(
+                name: "Networks");
 
             migrationBuilder.DropTable(
                 name: "Routers");
