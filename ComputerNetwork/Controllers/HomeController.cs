@@ -25,18 +25,36 @@ namespace ComputerNetwork.Controllers
 
 
         [HttpPost]
-        public IActionResult Save([FromBody]IEnumerable<Polaczenia> polaczenia)
+        public JsonResult Save([FromBody] PostData postData)
         {
-
-            return Json("{jestem},{tutaj}");
+            System.Diagnostics.Debug.WriteLine(postData.obiekty);
+            return Json(postData);
         }
 
-        public class Polaczenia{
-            string from { get; set; }
-            string to { get; set; }
-            string id { get; set; }
+        public class PostData
+        {
+            public List<Polaczenia> polaczenia { get; set; }
+            public List<Obiekty> obiekty { get; set; }
+        }
+        
+        public class Obiekty
+        {
+            public string defaultgateway { get; set; }
+            public string id { get; set; }
+            public string image { get; set; }
+            public string ipaddress { get; set; }
+            public string label { get; set; }
+            public string mask { get; set; }
+            public string shape { get; set; }
+            public string title { get; set; }
+        }
 
-            }
+        public class Polaczenia
+        {
+            public string from { get; set; }
+            public string to { get; set; }
+            public string id { get; set; }
+        }
 
         [HttpGet]
         public JsonResult Test()

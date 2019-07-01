@@ -43,24 +43,33 @@
     }
 
     function save() {
-        var Polaczenia = {};
+        var Polaczenia = [];
         var i = 0
             for (var key in edges._data) {
                 var value = edges._data[key];
-                Polaczenia[i]=value;
-                i++;
+                Polaczenia.push(value);
         }
-        var Obiekty = {};
+        var Obiekty = [];
         var i = 0
         for (var key in nodes._data) {
             var value = nodes._data[key];
-            Obiekty[i] = value;
-            i++;
+            Obiekty.push(value);
+      
         }
+        console.log(Polaczenia);
+        console.log(Obiekty);
+
+
+        var PostData = {
+            Polaczenia: Polaczenia,
+            Obiekty: Obiekty
+        };
+
+
 
         $.ajax({
             url: 'Home/Save',
-            data: JSON.stringify(Polaczenia),
+            data: JSON.stringify(PostData),
             contentType: 'application/json',
             type: 'POST',
             success: function (data) {
