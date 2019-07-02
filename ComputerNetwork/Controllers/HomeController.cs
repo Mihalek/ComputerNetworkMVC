@@ -323,6 +323,21 @@ namespace ComputerNetwork.Controllers
 
         }
 
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteAllNetworks()
+        {
+            _context.Routers.RemoveRange(_context.Routers);
+            _context.Switches.RemoveRange(_context.Switches);
+            _context.Computers.RemoveRange(_context.Computers);
+            _context.Edges.RemoveRange(_context.Edges);
+            _context.Networks.RemoveRange(_context.Networks);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+
+        }
+
         /*
         [HttpPost]
         public IActionResult Clean()
@@ -495,6 +510,6 @@ namespace ComputerNetwork.Controllers
             */
 
 
-        }
+    }
 
     }

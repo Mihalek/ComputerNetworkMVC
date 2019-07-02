@@ -42,6 +42,8 @@
         return idcomputer;
     }
 
+
+
     function deleteNetwork() {
         var todelete = document.getElementById("NetworkSchemas").value.toString();
         console.log(todelete);
@@ -52,9 +54,14 @@
             type: 'POST',
             dataType: 'json',
             success: function (result) {
-                $("#NetworkSchemas option:selected").remove();
+
             }            
-        });
+        })
+        var selectobject = document.getElementById("NetworkSchemas");
+        for (var i = 0; i < selectobject.length; i++) {
+            if (selectobject.options[i].value == todelete)
+                selectobject.remove(i);
+        }
 
 
        }
@@ -126,6 +133,21 @@
             }
             
         })
+    }
+
+    function deleteAllNetworks() {
+
+
+        $.ajax({
+            url: 'Home/DeleteAllNetworks',
+            contentType: 'application/json ; charset=utf-8',
+            type: 'POST',
+            success: function (result) {
+                
+            }
+        })
+        document.getElementById("NetworkSchemas").options.length = 0;
+
     }
 
     function draw() {

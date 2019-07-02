@@ -22,3 +22,6 @@
     top: 100px;
 }
 
+.btn-group-vertical button {
+    width: 100%;
+}
