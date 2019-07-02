@@ -21,6 +21,9 @@
     display: block;
     top: 100px;
 }
+div .no-padding {
+    padding: 0;
+}
 
 .btn-group-vertical button {
     width: 100%;

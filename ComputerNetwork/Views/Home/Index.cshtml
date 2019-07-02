@@ -17,22 +17,21 @@
                 <button type="button" id="switchbuttonid" class="btn btn-secondary" onclick="addSwitch()">Switch</button>
                 <button type="button" id="computerbuttonid" class="btn btn-secondary" onclick="addComputer()">Computer</button>
                 <button type="button" id="connectbuttonid" class="btn btn-secondary" onclick="addConnection()">Connect</button>
-                <button type="button" id="deleteedgebuttonid" class="btn btn-secondary" onclick="deleteEdge()">Delete Edge</button>
             </div>
             <div>
                 <h4>Choose network to draw</h4>
-              
+
                 <div class="btn-group-vertical" role="group">
                     <select id="NetworkSchemas"></select>
-                    <button type="button" onclick="draw()">Draw</button>
-                    <button type="button" onclick="deleteNetwork()">Delete Network</button>
-                    <button type="button" onclick="deleteAllNetworks()">Delete All Networks</button>
-                    <button type="button" onclick="updateNetwork()">Update Network</button>
+                    <button type="button" class="btn btn-warning" onclick="draw()">Draw</button>
+                    <button type="button" class="btn btn-success" onclick="deleteNetwork()">Delete Network</button>
+                    <button type="button" class="btn btn-primary" onclick="deleteAllNetworks()">Delete All Networks</button>
+                    <button type="button" class="btn btn-danger" onclick="updateNetwork()">Update Network</button>
                     <h4>Name of Network</h4>
                     <textarea id="nameofnetwork"></textarea><br />
                     <button type="button" onclick="save()">Save</button>
                 </div>
-                </div>
+            </div>
 
         </div>
 
@@ -66,10 +65,12 @@
                         <input asp-for="Gateway" class="form-control" id="defaultgatewayform" name="gateway" autocomplete="off" type="text">
                         <span asp-validation-for="Gateway" class="text-danger"></span>
                     </div>
-                    <button type="submit" asp-action="Index" name="btnSubmit" onclick="submitform()" class="btn btn-primary">Submit</button>
-                    <button type="submit" asp-action="Delete" id="deletebuttonid" class="btn btn-secondary" onclick="deleteItem()">Delete Item</button>
-                    <button type="submit" asp-action="Clean" id="cleancanvasbuttonid" class="btn btn-warning" onclick="resetAllNodes()">Clean</button>
-
+                    <div class="btn-group-vertical btn-group-lg">
+                        <button type="submit" asp-action="Index" name="btnSubmit" onclick="submitform()" class="btn btn-primary btn-block">Submit</button>
+                        <button type="submit" asp-action="Delete" id="deletebuttonid" class="btn btn-secondary btn-block" onclick="deleteItem()">Delete Item</button>
+                        <button type="button" id="deleteedgebuttonid" class="btn btn-secondary btn-block" onclick="deleteEdge()">Delete Edge</button>
+                        <button type="submit" asp-action="Clean" id="cleancanvasbuttonid" class="btn btn-warning btn-block" onclick="resetAllNodes()">Clean</button>
+                    </div>
                 </form>
             </div>
         </div>

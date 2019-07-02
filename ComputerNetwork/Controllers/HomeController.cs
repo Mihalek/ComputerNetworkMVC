@@ -287,6 +287,12 @@ namespace ComputerNetwork.Controllers
             return Json(obiekt);
         }
 
+        /*
+        [HttpPost]
+        public async Task<IActionResult> UpdateNetwork([FromBody]string todelete, PostData postda)
+        {
+           
+        }*/
 
         [HttpPost]
         public async Task<IActionResult> DeleteNetwork([FromBody]string todelete)
