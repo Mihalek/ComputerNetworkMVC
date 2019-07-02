@@ -287,6 +287,42 @@ namespace ComputerNetwork.Controllers
             return Json(obiekt);
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteNetwork([FromBody]string todelete)
+        {
+            try
+            {
+
+                var routerstodelete = _context.Routers.Where(r => r.NameOfNetwork == todelete);
+                _context.Routers.RemoveRange(routerstodelete);
+                _context.SaveChanges();
+
+               var switchestodelete = _context.Switches.Where(r => r.NameOfNetwork == todelete);
+                _context.Switches.RemoveRange(switchestodelete);
+                _context.SaveChanges();
+
+                var computerstodelete = _context.Computers.Where(r => r.NameOfNetwork == todelete);
+                _context.Computers.RemoveRange(computerstodelete);
+                _context.SaveChanges();
+
+                var edgestodelete = _context.Edges.Where(r => r.NameOfNetwork == todelete);
+                _context.Edges.RemoveRange(edgestodelete);
+
+                _context.Networks.Remove(_context.Networks
+                        .SingleOrDefault(r => r.NameOfNetwork == todelete));
+                _context.SaveChanges();
+
+                return RedirectToAction("index");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
+
+
+        }
+
         /*
         [HttpPost]
         public IActionResult Clean()

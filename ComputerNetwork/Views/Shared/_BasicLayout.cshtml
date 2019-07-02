@@ -42,6 +42,24 @@
         return idcomputer;
     }
 
+    function deleteNetwork() {
+        var todelete = document.getElementById("NetworkSchemas").value.toString();
+        console.log(todelete);
+        $.ajax({
+            url: 'Home/DeleteNetwork',
+            data: JSON.stringify(todelete),
+            contentType: 'application/json ; charset=utf-8',
+            type: 'POST',
+            dataType: 'json',
+            success: function (result) {
+                $("#NetworkSchemas option:selected").remove();
+            }            
+        });
+
+
+       }
+
+
     function save() {
         var Polaczenia = [];
         var i = 0
@@ -82,6 +100,9 @@
                 var option = document.createElement("option");
                 option.text = nameofnetworktoadd;
                 x.add(option);
+            },
+            error: function (response) {
+                alert("error");
             }
         });
 
