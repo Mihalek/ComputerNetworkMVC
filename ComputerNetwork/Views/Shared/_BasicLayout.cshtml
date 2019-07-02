@@ -67,23 +67,29 @@
         };
 
 
-
+        var nameofnetworktoadd;
 
         $.ajax({
             url: 'Home/Save',
             data: JSON.stringify(PostData),
             contentType: 'application/json',
             type: 'POST',
-            success: function (data) {
+            success: function (result) {
                 console.log("wyslano");
-
+                console.log(result);
+                nameofnetworktoadd = result.nameOfNetwork;
+                var x = document.getElementById("NetworkSchemas");
+                var option = document.createElement("option");
+                option.text = nameofnetworktoadd;
+                x.add(option);
             }
         });
 
 
+  
+
     }
 
-    
     function test() {
         $.ajax({
             type: "GET",

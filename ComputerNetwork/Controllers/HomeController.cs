@@ -97,6 +97,7 @@ namespace ComputerNetwork.Controllers
             return Json(Result);
         }
 
+        
 
 
 
@@ -213,9 +214,11 @@ namespace ComputerNetwork.Controllers
                             }
 
 
-
+                      
                     }
                 }
+                
+
             }
 
 
@@ -237,7 +240,7 @@ namespace ComputerNetwork.Controllers
 
 
 
-            return RedirectToAction("Index");
+            return Json(network);
         }
 
         public class PostData
