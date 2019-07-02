@@ -83,9 +83,6 @@
 
     }
 
-
- 
-       
     
     function test() {
         $.ajax({
@@ -106,21 +103,14 @@
 
     function draw() {
 
-        /*
-
         nodes.clear();
         edges.clear();
-        schematy[0].forEach(function (node) {
-            nodes.add(node);
-        });
-        polaczenia[0].forEach(function (edge) {
-            edges.add(edge);
-        });
-        */
+        
+        
         var szukam = document.getElementById("NetworkSchemas").value.toString();
     
-        nodes = {}
-        edges = {}
+        schematy = []
+        polaczenia = []
         $.ajax({
             type: "GET",
             url: "Home/GetNetwork",
@@ -128,8 +118,12 @@
             contentType: "application/json",
             dataType: "json",
             success: function (result) {
-                nodes = Object.assign(result.routers,result.switches,result.computers);         
-                edges = Object.assign(result.edges);
+                nodes.add(result.routers);
+                nodes.add(result.computers);
+                nodes.add(result.switches);
+                edges.add(result.edges);
+                console.log(nodes);
+                console.log(edges);
             },
             error: function (response) {
                 alert("error");
@@ -137,9 +131,15 @@
 
         })
 
-        console.log(nodes);
-        console.log(edges);
-
+        
+        /*
+        schematy[0].forEach(function (node) {
+            nodes.add(node);
+        });
+        polaczenia[0].forEach(function (edge) {
+            edges.add(edge);
+        });
+        */
 
        
 

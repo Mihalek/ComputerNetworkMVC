@@ -11,7 +11,7 @@
 
 <div class="container">
     <div class="form-row">
-        <div class="col-md-3 btn-group-vertical">
+        <div class="col-md-3 btn-group-vertical leftdiv">
             <div>
                 <button type="button" id="routerbuttonid" class="btn btn-secondary" onclick="addRouter()">Router</button>
                 <button type="button" id="switchbuttonid" class="btn btn-secondary" onclick="addSwitch()">Switch</button>
@@ -31,8 +31,8 @@
 
         </div>
 
-            <div id="mynetwork" class="col-md-7"></div>
-            <div class="col-md-2">
+            <div id="mynetwork" class="col-md-7 centerdiv"></div>
+            <div class="col-md-2 rightdiv">
                 <iframe name="votar" style="display: none"></iframe>
                 <form asp-controller="Home" style="display: inline-block;" id="objectparameters" method="post" target="votar">
                     <div asp-validation-summary="ModelOnly"></div>

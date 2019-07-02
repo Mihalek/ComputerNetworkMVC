@@ -2,6 +2,23 @@
     color: orange;
 }
 
-col.md-1{
+.col.md-1{
     background-color: blue;
 }
+
+
+.leftdiv{
+    display: block;
+    top: 100px;
+}
+
+.centerdiv {
+    display: block;
+    top: 100px;
+}
+
+.rightdiv {
+    display: block;
+    top: 100px;
+}
+
