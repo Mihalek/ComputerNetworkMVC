@@ -20,7 +20,45 @@
 
 
 <script>
+    function myFunction() {
+        $.ajax({
+            type: "GET",
+            url: "Home/GetNetworksNames",
+            //data: Json,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (response) {
+                alert("error");
+            }
+
+        }).done(function (result) {
+            if (result.length > 0) {
+                $('#NetworkSchemas').html('');
+                var options = '';
+                options += '<';
+                for (var i = 0; i < result.length; i++) {
+                    options += '<option value="' + result[i].value + '">' + result[i].value + '</option>';
+                }
+                $('#NetworkSchemas').append(options);
+
+            }
+        }).fail(function (error) {
+            alert(error.StatusText);
+        });
+        
+    }
+
+    /*
+    var interval = window.setInterval(function () {
+        myFunction();
+    }, 5000);
+     */
+
     var nodeIds, shadowState, nodesArray, nodes, edgesArray, edges, network;
+    var flaga_do_odswiezenia;
     var schematy = [];
     var polaczenia = [];
     var clickedid, clickedid2;
@@ -45,6 +83,7 @@
 
 
     function deleteNetwork() {
+        flaga_do_odswiezenia = 1;
         var todelete = document.getElementById("NetworkSchemas").value.toString();
         console.log(todelete);
         $.ajax({
@@ -68,6 +107,7 @@
 
 
     function save() {
+        flaga_do_odswiezenia = 1;
         var Polaczenia = [];
         var i = 0
         for (var key in edges._data) {
@@ -127,6 +167,7 @@
             dataType: "json",
             success: function (result) {
                 console.log(result);
+                flaga_do_odswiezenia = 1;
             },
             error: function (response) {
                 alert("error");
@@ -137,7 +178,7 @@
 
     function deleteAllNetworks() {
 
-
+        flaga_do_odswiezenia = 1;
         $.ajax({
             url: 'Home/DeleteAllNetworks',
             contentType: 'application/json ; charset=utf-8',
@@ -152,8 +193,8 @@
 
     function draw() {
 
-        nodes.clear();
-        edges.clear();
+      //  nodes.clear();
+       // edges.clear();
         
         
         var szukam = document.getElementById("NetworkSchemas").value.toString();
@@ -268,7 +309,7 @@
         });
     });
 
-       
+    
         
    
 
