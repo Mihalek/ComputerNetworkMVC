@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <NoWin32Manifest>true</NoWin32Manifest>
+    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

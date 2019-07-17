@@ -20,6 +20,8 @@
 
 
 <script>
+
+    
     function myFunction() {
         $.ajax({
             type: "GET",
@@ -36,26 +38,29 @@
 
         }).done(function (result) {
             if (result.length > 0) {
-                $('#NetworkSchemas').html('');
-                var options = '';
-                options += '<';
-                for (var i = 0; i < result.length; i++) {
-                    options += '<option value="' + result[i].value + '">' + result[i].value + '</option>';
-                }
-                $('#NetworkSchemas').append(options);
 
+                if ($("#NetworkSchemas option[value='" + result[result.length - 1].value + "']").length == 0) {
+
+                    options = '<option value="' + result[result.length - 1].value + '">' + result[result.length - 1].value + '</option>';
+                    $('#NetworkSchemas').append(options);
+                }
             }
+           else {
+                console.log("wchodze");
+                $('#NetworkSchemas').html('');
+            }
+
         }).fail(function (error) {
             alert(error.StatusText);
         });
         
     }
-
-    /*
+    
+    
     var interval = window.setInterval(function () {
         myFunction();
-    }, 5000);
-     */
+    }, 500);
+     
 
     var nodeIds, shadowState, nodesArray, nodes, edgesArray, edges, network;
     var flaga_do_odswiezenia;
@@ -142,11 +147,13 @@
             success: function (result) {
                 console.log("wyslano");
                 console.log(result);
+                /*
                 nameofnetworktoadd = result.nameOfNetwork;
                 var x = document.getElementById("NetworkSchemas");
                 var option = document.createElement("option");
                 option.text = nameofnetworktoadd;
                 x.add(option);
+                */
             },
             error: function (response) {
                 alert("error");
@@ -192,10 +199,11 @@
     }
 
     function draw() {
-
+        resetAllNodes();
       //  nodes.clear();
        // edges.clear();
-        
+
+       
         
         var szukam = document.getElementById("NetworkSchemas").value.toString();
     
