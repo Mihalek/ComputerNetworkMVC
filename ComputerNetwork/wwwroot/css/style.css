@@ -28,3 +28,13 @@ div .no-padding {
 .btn-group-vertical button {
     width: 100%;
 }
+
+.rightdiv {
+    display: block;
+    top: 100px;
+}
+
+canvas {
+    top: 100px;
+    display: block;
+}

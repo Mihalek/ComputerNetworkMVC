@@ -21,6 +21,58 @@
 
 <script>
 
+    var flaga_do_usuniecia = 0;
+    var siec_do_usuniecia = "";
+    var networks = [];
+
+
+    
+    function loadnetworks() {
+
+
+        $.ajax({
+            type: "GET",
+            url: "Home/GetNetworksNames",
+            //data: Json,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (result) {
+                networks = result;
+            },
+            error: function (response) {
+                alert("error");
+            }
+
+        })
+        if (networks.length > 0) {
+            var lista = document.getElementById("NetworkSchemas");
+            console.log(lista.value);
+            if (lista.value != '') {
+                $('#NetworkSchemas').html('<option value="' + lista.value + '">' + lista.value + '</option>');
+            }
+            var options = '';
+            options += '<';
+            for (var i = 0; i < networks.length; i++) {
+                if (networks[i].value == lista.value) {
+                    continue;
+                }
+
+                options += '<option value="' + networks[i].value + '">' + networks[i].value + '</option>';
+            }
+            $('#NetworkSchemas').append(options);
+
+           
+        }
+        else {
+                $('#NetworkSchemas').html('');
+            }
+
+        
+
+
+
+    }
+    
     
     function myFunction() {
         $.ajax({
@@ -38,14 +90,15 @@
 
         }).done(function (result) {
             if (result.length > 0) {
-
                 if ($("#NetworkSchemas option[value='" + result[result.length - 1].value + "']").length == 0) {
 
                     options = '<option value="' + result[result.length - 1].value + '">' + result[result.length - 1].value + '</option>';
                     $('#NetworkSchemas').append(options);
                 }
+
             }
-           else {
+
+            else {
                 console.log("wchodze");
                 $('#NetworkSchemas').html('');
             }
@@ -58,8 +111,14 @@
     
     
     var interval = window.setInterval(function () {
-        myFunction();
-    }, 500);
+
+
+
+        loadnetworks();
+    }, 1000);
+
+
+
      
 
     var nodeIds, shadowState, nodesArray, nodes, edgesArray, edges, network;
@@ -89,6 +148,7 @@
 
     function deleteNetwork() {
         flaga_do_odswiezenia = 1;
+
         var todelete = document.getElementById("NetworkSchemas").value.toString();
         console.log(todelete);
         $.ajax({
@@ -99,14 +159,17 @@
             dataType: 'json',
             success: function (result) {
 
-            }            
+
+            }
         })
+
+        
         var selectobject = document.getElementById("NetworkSchemas");
         for (var i = 0; i < selectobject.length; i++) {
             if (selectobject.options[i].value == todelete)
                 selectobject.remove(i);
         }
-
+        
 
        }
 
@@ -228,7 +291,6 @@
             }
 
         })
-
         
         /*
         schematy[0].forEach(function (node) {
@@ -285,7 +347,7 @@
 
 
     }
-
+    /*
     $(function () {
 
         $.ajax({
@@ -315,7 +377,7 @@
         }).fail(function (error) {
             alert(error.StatusText);
         });
-    });
+    });*/
 
     
         

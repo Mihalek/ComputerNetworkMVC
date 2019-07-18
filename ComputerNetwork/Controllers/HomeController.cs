@@ -12,6 +12,7 @@ namespace ComputerNetwork.Controllers
     public class HomeController : Controller
     {
         private ApplicationDbContext _context;
+        private string flagtodelete;
         //private IRouterRepository routerRepository;
         public ViewResult Index()
         {
@@ -32,10 +33,12 @@ namespace ComputerNetwork.Controllers
         }
 
 
+
+
         [HttpGet]
         public async Task<JsonResult> GetNetwork(string mystring)
         {
-
+            
             var routers = from c in _context.Routers
                           where c.NameOfNetwork == mystring
                           select new {
@@ -92,7 +95,8 @@ namespace ComputerNetwork.Controllers
                             nazwasieci = c.NameOfNetwork,
                             dateofadd = c.DateOfAdd,
                             @from = c.From
-                        };
+                        }
+                        ;
             var Result = new { Routers = routers, Switches = switches, Computers = computers, Edges = edges };
             return Json(Result);
         }
@@ -289,10 +293,21 @@ namespace ComputerNetwork.Controllers
 
         /*
         [HttpPost]
-        public async Task<IActionResult> UpdateNetwork([FromBody]string todelete, PostData postda)
+        public async Task<IActionResult> Flag([FromBody]string flaga_do_usuniecia)
         {
-           
-        }*/
+            flagtodelete = flaga_do_usuniecia;
+
+            return RedirectToAction();
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> Flag()
+        {
+            string a = flagtodelete;
+            flagtodelete = "";
+            return Json(a);
+        }
+        */
 
         [HttpPost]
         public async Task<IActionResult> DeleteNetwork([FromBody]string todelete)
