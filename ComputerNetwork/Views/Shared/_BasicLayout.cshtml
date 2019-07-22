@@ -91,7 +91,6 @@
         }).done(function (result) {
             if (result.length > 0) {
                 if ($("#NetworkSchemas option[value='" + result[result.length - 1].value + "']").length == 0) {
-
                     options = '<option value="' + result[result.length - 1].value + '">' + result[result.length - 1].value + '</option>';
                     $('#NetworkSchemas').append(options);
                 }
@@ -99,7 +98,6 @@
             }
 
             else {
-                console.log("wchodze");
                 $('#NetworkSchemas').html('');
             }
 
@@ -115,7 +113,7 @@
 
 
         loadnetworks();
-    }, 1000);
+    }, 500);
 
 
 
@@ -221,8 +219,10 @@
             error: function (response) {
                 alert("error");
             }
-        });
+           
 
+        });
+         resetAllNodes();
 
   
 
@@ -343,6 +343,8 @@
         network.on("hoverNode", function (params) {
             network.canvas.body.container.style.cursor = 'pointer';
         });
+
+
         window.onresize = function () { network.fit(); }
 
 
