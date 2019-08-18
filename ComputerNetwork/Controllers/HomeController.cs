@@ -12,7 +12,7 @@ namespace ComputerNetwork.Controllers
     public class HomeController : Controller
     {
         private ApplicationDbContext _context;
-        private string flagtodelete;
+        private MessageHub hub;
         //private IRouterRepository routerRepository;
         public ViewResult Index()
         {
@@ -118,6 +118,8 @@ namespace ComputerNetwork.Controllers
                 DateOfAdd = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")
                           
             };
+
+
             await _context.Networks.AddAsync(network);
             await _context.SaveChangesAsync();
 
@@ -237,11 +239,13 @@ namespace ComputerNetwork.Controllers
                         NameOfNetwork = postData.nazwasieci.ToString() + " " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss")
 
                     };
+                
                         await _context.Edges.AddAsync(edge);
                         await _context.SaveChangesAsync();
 
             }
 
+      
 
 
             return Json(network);

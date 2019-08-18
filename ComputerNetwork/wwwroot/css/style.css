@@ -9,17 +9,14 @@
 
 .leftdiv{
     display: block;
-    top: 100px;
 }
 
 .centerdiv {
     display: block;
-    top: 100px;
 }
 
 .rightdiv {
     display: block;
-    top: 100px;
 }
 div .no-padding {
     padding: 0;
@@ -31,10 +28,8 @@ div .no-padding {
 
 .rightdiv {
     display: block;
-    top: 100px;
 }
 
 canvas {
-    top: 100px;
     display: block;
 }

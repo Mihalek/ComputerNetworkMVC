@@ -12,6 +12,7 @@
     <script src="~/scripts/jquery-3.3.1.js"></script>
     <script src="~/scripts/jquery.validate.min.js"></script>
     <script src="~/scripts/additional-methods.min.js"></script>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
 </head>
 <body>
     <div>
@@ -25,15 +26,51 @@
     var siec_do_usuniecia = "";
     var networks = [];
 
+    var connection = new signalR.HubConnectionBuilder().withUrl("/messages").build();
 
+    connection.on("ReceiveMessage", function (message) {
+       var options = '<option value="' + message + '">' + message + '</option>';
+       $('#NetworkSchemas').append(options);
+    });
+
+      connection.on("CleanMessage", function () {
+      $('#NetworkSchemas').html('');
+      });
+
+    connection.on("DeleteNetworkMessage", function () {
+        var todelete = document.getElementById("NetworkSchemas").value.toString();
+        var selectobject = document.getElementById("NetworkSchemas");
+        for (var i = 0; i < selectobject.length; i++) {
+            if (selectobject.options[i].value == todelete)
+                selectobject.remove(i);
+        }
+
+    });
+
+    connection.start().catch(err => console.error(err.toString()));
+
+     
+document.getElementById("save").addEventListener("click", event => {    
+    const message = document.getElementById("nameofnetwork").value;
+    connection.invoke("AddNetworks", message).catch(err => console.error(err.toString()));  
+    event.preventDefault();  
+});   
+document.getElementById("deleteallnetworks").addEventListener("click", event => {    
+    connection.invoke("CleanNetworks").catch(err => console.error(err.toString()));  
+    event.preventDefault();  
+});   
+
+document.getElementById("deleteonenetwork").addEventListener("click", event => {    
+
+    connection.invoke("DeleteOneNetwork").catch(err => console.error(err.toString()));  
+    event.preventDefault();  
+});   
     
-    function loadnetworks() {
-
+  function loadnetworks() {
 
         $.ajax({
             type: "GET",
             url: "Home/GetNetworksNames",
-            //data: Json,
             contentType: "application/json",
             dataType: "json",
             success: function (result) {
@@ -67,11 +104,10 @@
                 $('#NetworkSchemas').html('');
             }
 
-        
-
-
 
     }
+    /*
+
     
     
     function myFunction() {
@@ -115,7 +151,7 @@
         loadnetworks();
     }, 500);
 
-
+*/
 
      
 
@@ -161,12 +197,12 @@
             }
         })
 
-        
+        /*
         var selectobject = document.getElementById("NetworkSchemas");
         for (var i = 0; i < selectobject.length; i++) {
             if (selectobject.options[i].value == todelete)
                 selectobject.remove(i);
-        }
+        }*/
         
 
        }
@@ -349,7 +385,7 @@
 
 
     }
-    /*
+    
     $(function () {
 
         $.ajax({
@@ -379,7 +415,7 @@
         }).fail(function (error) {
             alert(error.StatusText);
         });
-    });*/
+    });
 
     
         
