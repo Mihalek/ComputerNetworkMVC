@@ -4,9 +4,9 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/StyleSheet.css">
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/vis.min.css">
-    <link rel="stylesheet" href="~/css/style.css">
     <script src="~/scripts/vis.js"></script>
     <script src="~/scripts/script.js"></script>
     <script src="~/scripts/jquery-3.3.1.js"></script>
@@ -20,557 +20,431 @@
     </div>
 
 
-<script>
+    <script>
 
-    var flaga_do_usuniecia = 0;
-    var siec_do_usuniecia = "";
-    var networks = [];
+        var flaga_do_usuniecia = 0;
+        var siec_do_usuniecia = "";
+        var networks = [];
+        var nodeIds, shadowState, nodesArray, nodes, edgesArray, edges, network;
+        var flaga_do_odswiezenia;
+        var schematy = [];
+        var polaczenia = [];
+        var clickedid, clickedid2;
+        var helpid;
+        var idrouter, idcomputer, idswitch = 0;
 
-    var connection = new signalR.HubConnectionBuilder().withUrl("/messages").build();
 
-    connection.on("ReceiveMessage", function (message) {
-       var options = '<option value="' + message + '">' + message + '</option>';
-       $('#NetworkSchemas').append(options);
-    });
+        var connection = new signalR.HubConnectionBuilder().withUrl("/messages").build();
 
-      connection.on("CleanMessage", function () {
-      $('#NetworkSchemas').html('');
-      });
-
-    connection.on("DeleteNetworkMessage", function () {
-        var todelete = document.getElementById("NetworkSchemas").value.toString();
-        var selectobject = document.getElementById("NetworkSchemas");
-        for (var i = 0; i < selectobject.length; i++) {
-            if (selectobject.options[i].value == todelete)
-                selectobject.remove(i);
-        }
-
-    });
-
-    connection.start().catch(err => console.error(err.toString()));
-
-     
-document.getElementById("save").addEventListener("click", event => {    
-    const message = document.getElementById("nameofnetwork").value;
-    connection.invoke("AddNetworks", message).catch(err => console.error(err.toString()));  
-    event.preventDefault();  
-});   
-document.getElementById("deleteallnetworks").addEventListener("click", event => {    
-    connection.invoke("CleanNetworks").catch(err => console.error(err.toString()));  
-    event.preventDefault();  
-});   
-
-document.getElementById("deleteonenetwork").addEventListener("click", event => {    
-
-    connection.invoke("DeleteOneNetwork").catch(err => console.error(err.toString()));  
-    event.preventDefault();  
-});   
-    
-  function loadnetworks() {
-
-        $.ajax({
-            type: "GET",
-            url: "Home/GetNetworksNames",
-            contentType: "application/json",
-            dataType: "json",
-            success: function (result) {
-                networks = result;
-            },
-            error: function (response) {
-                alert("error");
-            }
-
-        })
-        if (networks.length > 0) {
-            var lista = document.getElementById("NetworkSchemas");
-            console.log(lista.value);
-            if (lista.value != '') {
-                $('#NetworkSchemas').html('<option value="' + lista.value + '">' + lista.value + '</option>');
-            }
-            var options = '';
-            options += '<';
-            for (var i = 0; i < networks.length; i++) {
-                if (networks[i].value == lista.value) {
-                    continue;
-                }
-
-                options += '<option value="' + networks[i].value + '">' + networks[i].value + '</option>';
-            }
+        connection.on("ReceiveMessage", function (message) {
+            var options = '<option value="' + message + '">' + message + '</option>';
             $('#NetworkSchemas').append(options);
+        });
 
-           
+        connection.on("CleanMessage", function () {
+            $('#NetworkSchemas').html('');
+        });
+
+        connection.on("DeleteNetworkMessage", function (message) {
+            var selectobject = document.getElementById("NetworkSchemas");
+            for (var i = 0; i < selectobject.length; i++) {
+                if (selectobject.options[i].value == message)
+                    selectobject.remove(i);
+            }
+
+        });
+
+        connection.start().catch(err => console.error(err.toString()));
+
+
+        document.getElementById("save").addEventListener("click", event => {
+            const message = document.getElementById("nameofnetwork").value;
+            connection.invoke("AddNetworks", message).catch(err => console.error(err.toString()));
+            event.preventDefault();
+        });
+        document.getElementById("deleteallnetworks").addEventListener("click", event => {
+            connection.invoke("CleanNetworks").catch(err => console.error(err.toString()));
+            event.preventDefault();
+        });
+
+        document.getElementById("deleteonenetwork").addEventListener("click", event => {
+            const message = document.getElementById("NetworkSchemas").value.toString();
+            connection.invoke("DeleteOneNetwork", message).catch(err => console.error(err.toString()));
+            event.preventDefault();
+        });
+
+
+        function growIdRouter() {
+            idrouter = idrouter + 1;
+            return idrouter;
         }
-        else {
-                $('#NetworkSchemas').html('');
+
+        function growIdSwitch() {
+            idswitch = idswitch + 1;
+            return idswitch;
+        }
+
+        function growIdComputer() {
+            idcomputer = idcomputer + 1;
+            return idcomputer;
+        }
+
+
+
+        function deleteNetwork() {
+            flaga_do_odswiezenia = 1;
+
+            var todelete = document.getElementById("NetworkSchemas").value.toString();
+            console.log(todelete);
+            $.ajax({
+                url: 'Home/DeleteNetwork',
+                data: JSON.stringify(todelete),
+                contentType: 'application/json ; charset=utf-8',
+                type: 'POST',
+                dataType: 'json',
+                success: function (result) {
+
+
+                }
+            })
+
+        }
+
+
+        function save() {
+            flaga_do_odswiezenia = 1;
+            var Polaczenia = [];
+            var i = 0
+            for (var key in edges._data) {
+                var value = edges._data[key];
+                Polaczenia.push(value);
             }
+            var Obiekty = [];
+            var i = 0
+            for (var key in nodes._data) {
+                var value = nodes._data[key];
+                Obiekty.push(value);
 
-
-    }
-    /*
-
-    
-    
-    function myFunction() {
-        $.ajax({
-            type: "GET",
-            url: "Home/GetNetworksNames",
-            //data: Json,
-            contentType: "application/json",
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-            },
-            error: function (response) {
-                alert("error");
             }
+            console.log(Polaczenia);
+            console.log(Obiekty);
 
-        }).done(function (result) {
-            if (result.length > 0) {
-                if ($("#NetworkSchemas option[value='" + result[result.length - 1].value + "']").length == 0) {
-                    options = '<option value="' + result[result.length - 1].value + '">' + result[result.length - 1].value + '</option>';
+            var nameofnetwork = document.getElementById("nameofnetwork").value.toString();
+            var PostData = {
+                NazwaSieci: nameofnetwork,
+                Polaczenia: Polaczenia,
+                Obiekty: Obiekty
+            };
+
+
+            $.ajax({
+                url: 'Home/Save',
+                data: JSON.stringify(PostData),
+                contentType: 'application/json',
+                type: 'POST',
+                success: function (result) {
+                    console.log("wyslano");
+                    console.log(result);
+                },
+                error: function (response) {
+                    alert("error");
+                }
+
+
+            });
+            resetAllNodes();
+
+
+
+        }
+
+        function test() {
+            $.ajax({
+                type: "GET",
+                url: "Home/GetNetworksNames",
+                //data: Json,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    flaga_do_odswiezenia = 1;
+                },
+                error: function (response) {
+                    alert("error");
+                }
+
+            })
+        }
+
+        function deleteAllNetworks() {
+
+            flaga_do_odswiezenia = 1;
+            $.ajax({
+                url: 'Home/DeleteAllNetworks',
+                contentType: 'application/json ; charset=utf-8',
+                type: 'POST',
+                success: function (result) {
+
+                }
+            })
+            document.getElementById("NetworkSchemas").options.length = 0;
+
+        }
+
+        function draw() {
+            resetAllNodes();
+
+            var szukam = document.getElementById("NetworkSchemas").value.toString();
+
+            schematy = []
+            polaczenia = []
+            $.ajax({
+                type: "GET",
+                url: "Home/GetNetwork",
+                data: { mystring: szukam },
+                contentType: "application/json",
+                dataType: "json",
+                success: function (result) {
+                    nodes.add(result.routers);
+                    nodes.add(result.computers);
+                    nodes.add(result.switches);
+                    edges.add(result.edges);
+                    console.log(nodes);
+                    console.log(edges);
+                },
+                error: function (response) {
+                    alert("error");
+                }
+
+            })
+
+
+            container = document.getElementById('mynetwork');
+            var graph = { nodes: nodes, edges: edges };
+            var options = {
+                manipulation: {
+                    enabled: false,
+                    addEdge: function (data, callback) {
+                        console.log('add edge!', data);
+                        callback(data);
+                    }
+                },
+                interaction:
+                {
+                    hover: true
+                }
+            };
+            network = new vis.Network(container, graph, options);
+
+            network.on('click', function (properties) {
+                var ids = properties.nodes;
+                var ids2 = properties.edges;
+                clickedid = ids;
+                clickedid2 = ids2;
+                helpid = clickedid;
+                document.getElementById("objectparameters").reset();
+                document.getElementById("nameofelementform").value = nodes.get(clickedid)[0].label.toString(32);
+                document.getElementById("ipaddressform").value = nodes.get(clickedid)[0].ipaddress.toString(32);
+                document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
+                document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
+                document.getElementById("defaultgatewayform").value = nodes.get(clickedid)[0].defaultgateway.toString(32);
+                document.getElementById("idform").value = helpid.toString(32);
+
+                console.log(nodes.get(clickedid)[0]);
+            });
+            network.on("hoverNode", function (params) {
+                network.canvas.body.container.style.cursor = 'pointer';
+            });
+
+
+            window.onresize = function () { network.fit(); }
+
+
+        }
+
+        $(function () {
+
+            $.ajax({
+                type: "GET",
+                url: "Home/GetNetworksNames",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (response) {
+                    alert("error");
+                }
+
+            }).done(function (result) {
+                if (result.length > 0) {
+                    $('#NetworkSchemas').html('');
+                    var options = '';
+                    options += '<';
+                    for (var i = 0; i < result.length; i++) {
+                        options += '<option value="' + result[i].value + '">' + result[i].value + '</option>';
+                    }
                     $('#NetworkSchemas').append(options);
+
                 }
-
-            }
-
-            else {
-                $('#NetworkSchemas').html('');
-            }
-
-        }).fail(function (error) {
-            alert(error.StatusText);
+            }).fail(function (error) {
+                alert(error.StatusText);
+            });
         });
-        
-    }
-    
-    
-    var interval = window.setInterval(function () {
 
 
 
-        loadnetworks();
-    }, 500);
-
-*/
-
-     
-
-    var nodeIds, shadowState, nodesArray, nodes, edgesArray, edges, network;
-    var flaga_do_odswiezenia;
-    var schematy = [];
-    var polaczenia = [];
-    var clickedid, clickedid2;
-    var helpid;
-    var idrouter, idcomputer, idswitch = 0;
-
-    function growIdRouter() {
-        idrouter = idrouter + 1;
-        return idrouter;
-    }
-
-    function growIdSwitch() {
-        idswitch = idswitch + 1;
-        return idswitch;
-    }
-
-    function growIdComputer() {
-        idcomputer = idcomputer + 1;
-        return idcomputer;
-    }
 
 
-
-    function deleteNetwork() {
-        flaga_do_odswiezenia = 1;
-
-        var todelete = document.getElementById("NetworkSchemas").value.toString();
-        console.log(todelete);
-        $.ajax({
-            url: 'Home/DeleteNetwork',
-            data: JSON.stringify(todelete),
-            contentType: 'application/json ; charset=utf-8',
-            type: 'POST',
-            dataType: 'json',
-            success: function (result) {
+        function startNetwork() {
+            // this list is kept to remove a random node.. we do not add node 1 here because it's used for changes
+            nodeIds = [];
+            shadowState = false;
 
 
-            }
-        })
+            // create an array with nodes
+            nodesArray = [
 
-        /*
-        var selectobject = document.getElementById("NetworkSchemas");
-        for (var i = 0; i < selectobject.length; i++) {
-            if (selectobject.options[i].value == todelete)
-                selectobject.remove(i);
-        }*/
-        
+            ];
+            nodes = new vis.DataSet(nodesArray);
 
-       }
+            // create an array with edges
+            edgesArray = [
+            ];
+            edges = new vis.DataSet(edgesArray);
 
+            // create a network
+            var container = document.getElementById('mynetwork');
+            var data = {
+                nodes: nodes,
+                edges: edges
+            };
+            var options = {
+                manipulation: {
+                    enabled: false,
+                    addEdge: function (data, callback) {
+                        console.log('add edge!', data);
+                        callback(data);
+                        var dataobject = JSON.stringify({
+                            'from': data.from, 'to': data.to, 'id': data.id
 
-    function save() {
-        flaga_do_odswiezenia = 1;
-        var Polaczenia = [];
-        var i = 0
-        for (var key in edges._data) {
-            var value = edges._data[key];
-            Polaczenia.push(value);
-        }
-        var Obiekty = [];
-        var i = 0
-        for (var key in nodes._data) {
-            var value = nodes._data[key];
-            Obiekty.push(value);
+                        });
 
-        }
-        console.log(Polaczenia);
-        console.log(Obiekty);
-
-        var nameofnetwork = document.getElementById("nameofnetwork").value.toString();
-        var PostData = {
-            NazwaSieci: nameofnetwork,
-            Polaczenia: Polaczenia,
-            Obiekty: Obiekty
-        };
-
-
-        var nameofnetworktoadd;
-
-        $.ajax({
-            url: 'Home/Save',
-            data: JSON.stringify(PostData),
-            contentType: 'application/json',
-            type: 'POST',
-            success: function (result) {
-                console.log("wyslano");
-                console.log(result);
-                /*
-                nameofnetworktoadd = result.nameOfNetwork;
-                var x = document.getElementById("NetworkSchemas");
-                var option = document.createElement("option");
-                option.text = nameofnetworktoadd;
-                x.add(option);
-                */
-            },
-            error: function (response) {
-                alert("error");
-            }
-           
-
-        });
-         resetAllNodes();
-
-  
-
-    }
-
-    function test() {
-        $.ajax({
-            type: "GET",
-            url: "Home/GetNetworksNames",
-           //data: Json,
-            contentType: "application/json",
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                flaga_do_odswiezenia = 1;
-            },
-            error: function (response) {
-                alert("error");
-            }
-            
-        })
-    }
-
-    function deleteAllNetworks() {
-
-        flaga_do_odswiezenia = 1;
-        $.ajax({
-            url: 'Home/DeleteAllNetworks',
-            contentType: 'application/json ; charset=utf-8',
-            type: 'POST',
-            success: function (result) {
-                
-            }
-        })
-        document.getElementById("NetworkSchemas").options.length = 0;
-
-    }
-
-    function draw() {
-        resetAllNodes();
-      //  nodes.clear();
-       // edges.clear();
-
-       
-        
-        var szukam = document.getElementById("NetworkSchemas").value.toString();
-    
-        schematy = []
-        polaczenia = []
-        $.ajax({
-            type: "GET",
-            url: "Home/GetNetwork",
-            data: { mystring: szukam },
-            contentType: "application/json",
-            dataType: "json",
-            success: function (result) {
-                nodes.add(result.routers);
-                nodes.add(result.computers);
-                nodes.add(result.switches);
-                edges.add(result.edges);
-                console.log(nodes);
-                console.log(edges);
-            },
-            error: function (response) {
-                alert("error");
-            }
-
-        })
-        
-        /*
-        schematy[0].forEach(function (node) {
-            nodes.add(node);
-        });
-        polaczenia[0].forEach(function (edge) {
-            edges.add(edge);
-        });
-        */
-
-       
-
-        container = document.getElementById('mynetwork');
-        var graph = { nodes: nodes, edges: edges};
-        var options = {
-            manipulation: {
-                enabled: false,
-                addEdge: function (data, callback) {
-                    console.log('add edge!', data);
-                    callback(data);
+                    }
+                },
+                interaction:
+                {
+                    hover: true
                 }
-            },
-            interaction:
-            {
-                hover: true
-            }
-        };
-        network = new vis.Network(container, graph, options);
+            };
 
-        network.on('click', function (properties) {
-            var ids = properties.nodes;
-            var ids2 = properties.edges;
-            var clickedNodes = nodes.get(ids);
-            var clickedNodes2 = edges.get(ids2);
-            clickedid = ids;
-            clickedid2 = ids2;
-            helpid = clickedid;
+            network = new vis.Network(container, data, options);
+            network.on('click', function (properties) {
+                var ids = properties.nodes;
+                var ids2 = properties.edges;
+                var clickedNodes = nodes.get(ids);
+                var clickedNodes2 = edges.get(ids2);
+                clickedid = ids;
+                clickedid2 = ids2;
+                helpid = clickedid;
+                document.getElementById("objectparameters").reset();
+                document.getElementById("nameofelementform").value = nodes.get(clickedid)[0].label.toString(32);
+                document.getElementById("ipaddressform").value = nodes.get(clickedid)[0].ipaddress.toString(32);
+                document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
+                document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
+                document.getElementById("defaultgatewayform").value = nodes.get(clickedid)[0].defaultgateway.toString(32);
+                document.getElementById("idform").value = helpid.toString(32);
+
+
+                //console.log(nodes.get(clickedid)[0].title);
+                console.log(nodes.get(clickedid)[0]);
+            });
+            network.on("hoverNode", function (params) {
+                network.canvas.body.container.style.cursor = 'pointer';
+            });
+            window.onresize = function () { network.fit(); }
+        }
+        function cleanform() {
             document.getElementById("objectparameters").reset();
-            document.getElementById("nameofelementform").value = nodes.get(clickedid)[0].label.toString(32);
-            document.getElementById("ipaddressform").value = nodes.get(clickedid)[0].ipaddress.toString(32);
-            document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
-            document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
-            document.getElementById("defaultgatewayform").value = nodes.get(clickedid)[0].defaultgateway.toString(32);
-            document.getElementById("idform").value = helpid.toString(32);
-
-
-            //console.log(nodes.get(clickedid)[0].title);
-            console.log(nodes.get(clickedid)[0]);
-        });
-        network.on("hoverNode", function (params) {
-            network.canvas.body.container.style.cursor = 'pointer';
-        });
-
-
-        window.onresize = function () { network.fit(); }
-
-
-    }
-    
-    $(function () {
-
-        $.ajax({
-            type: "GET",
-            url: "Home/GetNetworksNames",
-            //data: Json,
-            contentType: "application/json",
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-            },
-            error: function (response) {
-                alert("error");
-            }
-
-        }).done(function (result) {
-            if (result.length > 0) {
-                $('#NetworkSchemas').html('');
-                var options = '';
-                options += '<';
-                for (var i = 0; i < result.length; i++) {
-                    options += '<option value="' + result[i].value + '">' + result[i].value + '</option>';
-                }
-                $('#NetworkSchemas').append(options);
-
-            }
-        }).fail(function (error) {
-            alert(error.StatusText);
-        });
-    });
-
-    
-        
-   
-
-    function startNetwork() {
-        // this list is kept to remove a random node.. we do not add node 1 here because it's used for changes
-        nodeIds = [];
-        shadowState = false;
-
-
-        // create an array with nodes
-        nodesArray = [
-
-        ];
-        nodes = new vis.DataSet(nodesArray);
-
-        // create an array with edges
-        edgesArray = [
-        ];
-        edges = new vis.DataSet(edgesArray);
-
-        // create a network
-        var container = document.getElementById('mynetwork');
-        var data = {
-            nodes: nodes,
-            edges: edges
-        };
-        var options = {
-            manipulation: {
-                enabled: false,
-                addEdge: function (data, callback) {
-                    console.log('add edge!', data);
-                    callback(data);
-                    var dataobject = JSON.stringify({
-                        'from': data.from, 'to': data.to, 'id': data.id
-             
-                    });
-
-                }
-            },
-            interaction:
-            {
-                hover: true
-            }
-        };
-
-        network = new vis.Network(container, data, options);
-        network.on('click', function (properties) {
-            var ids = properties.nodes;
-            var ids2 = properties.edges;
-            var clickedNodes = nodes.get(ids);
-            var clickedNodes2 = edges.get(ids2);
-            clickedid = ids;
-            clickedid2 = ids2;
-            helpid = clickedid;
-            document.getElementById("objectparameters").reset();
-            document.getElementById("nameofelementform").value = nodes.get(clickedid)[0].label.toString(32);
-            document.getElementById("ipaddressform").value = nodes.get(clickedid)[0].ipaddress.toString(32);
-            document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
-            document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
-            document.getElementById("defaultgatewayform").value = nodes.get(clickedid)[0].defaultgateway.toString(32);
-            document.getElementById("idform").value = helpid.toString(32);
-            
-            
-            //console.log(nodes.get(clickedid)[0].title);
-            console.log(nodes.get(clickedid)[0]);
-        });
-        network.on("hoverNode", function (params) {
-            network.canvas.body.container.style.cursor = 'pointer';
-        });
-        window.onresize = function () { network.fit(); }
-    }
-    function cleanform() {
-        document.getElementById("objectparameters").reset();
-    }
-    function submitform() {
-
-     // document.getElementById('ipaddressform').value
-        var newID = helpid.toString(32);
-        var NewIpAddress = document.getElementById('ipaddressform').value;
-        var NewMask = document.getElementById('maskform').value;
-        var NewDefaultGateway = document.getElementById('defaultgatewayform').value;
-       // alert(newID);
-        nodes.update({ id: newID, ipaddress: NewIpAddress, mask: NewMask, defaultgateway: NewDefaultGateway, "title": "id: " + newID + "</br>" + "IP address: " + NewIpAddress + "</br>" + "Mask: " + NewMask + "</br>" + "Default Gateway: " + NewDefaultGateway});
-        
-        document.getElementById("objectparameters").submit();
-        return false;
-   
-
-    }
-
-
-    function addConnection() {
-        network.enableEditMode();
-        network.addEdgeMode();
-    }
-
-    function addComputer() {
-        var newId = (Math.random() * 1e7).toString(32);
-        nodes.add({
-            id: newId, label: "Computer".toString(32) ,ipaddress: "" ,mask: "" , defaultgateway: "" , image: "img/computer.png", shape: "image", "title": "id: " + newId + "</br>" + "IP address: "+"</br>"+ "Mask: " +"</br>"+"Default Gateway: "});       
-        nodeIds.push(newId);
-    } 
-
-    function addRouter() {
-        var newId = (Math.random() * 1e7).toString(32);
-        nodes.add({ id: newId, label: "Router".toString(32), ipaddress: "", mask: "", defaultgateway: "", image: "img/Router.jpg", shape: "image", "title": "id: " + newId + "</br>" + "IP address: " + "</br>" + "Mask: " + "</br>" + "Default Gateway: " });
-        nodeIds.push(newId);
-    }
-
-    function addSwitch() {
-        var newId = (Math.random() * 1e7).toString(32);
-        nodes.add({ id: newId, label: "Switch".toString(32), ipaddress: "", mask: "", defaultgateway: "", image: "img/Switch.jpg", shape: "image", "title": "id: " + newId + "</br>" + "IP address: " + "</br>" + "Mask: " + "</br>" + "Default Gateway: " });
-
-        nodeIds.push(newId);
-    }
-
-
-    function removeRandomNode() {
-        var randomNodeId = nodeIds[Math.floor(Math.random() * nodeIds.length)];
-        nodes.remove({ id: randomNodeId });
-
-        var index = nodeIds.indexOf(randomNodeId);
-        nodeIds.splice(index, 1);
-    }
-
-    function resetAllNodes() {
-        document.getElementById("objectparameters").submit();
-        nodes.clear();
-        edges.clear();
-        nodes.add(nodesArray);
-        edges.add(edgesArray);
-    }
-
-    function deleteEdge() {
-        edges.remove(clickedid2);
-    }
-
-    function deleteItem() {
-
-        document.getElementById("objectparameters").submit();
-        nodes.remove(clickedid);
-        console.log(schematy);
-    }
-
-    function resetAll() {
-        if (network !== null) {
-            network.destroy();
-            network = null;
         }
+        function submitform() {
+
+            var newID = helpid.toString(32);
+            var NewIpAddress = document.getElementById('ipaddressform').value;
+            var NewMask = document.getElementById('maskform').value;
+            var NewDefaultGateway = document.getElementById('defaultgatewayform').value;
+            nodes.update({ id: newID, ipaddress: NewIpAddress, mask: NewMask, defaultgateway: NewDefaultGateway, "title": "id: " + newID + "</br>" + "IP address: " + NewIpAddress + "</br>" + "Mask: " + NewMask + "</br>" + "Default Gateway: " + NewDefaultGateway });
+
+            document.getElementById("objectparameters").submit();
+            return false;
+
+
+        }
+
+
+        function addConnection() {
+            network.enableEditMode();
+            network.addEdgeMode();
+        }
+
+        function addComputer() {
+            var newId = (Math.random() * 1e7).toString(32);
+            nodes.add({
+                id: newId, label: "Computer".toString(32), ipaddress: "", mask: "", defaultgateway: "", image: "img/computer.png", shape: "image", "title": "id: " + newId + "</br>" + "IP address: " + "</br>" + "Mask: " + "</br>" + "Default Gateway: "
+            });
+            nodeIds.push(newId);
+        }
+
+        function addRouter() {
+            var newId = (Math.random() * 1e7).toString(32);
+            nodes.add({ id: newId, label: "Router".toString(32), ipaddress: "", mask: "", defaultgateway: "", image: "img/Router.jpg", shape: "image", "title": "id: " + newId + "</br>" + "IP address: " + "</br>" + "Mask: " + "</br>" + "Default Gateway: " });
+            nodeIds.push(newId);
+        }
+
+        function addSwitch() {
+            var newId = (Math.random() * 1e7).toString(32);
+            nodes.add({ id: newId, label: "Switch".toString(32), ipaddress: "", mask: "", defaultgateway: "", image: "img/Switch.jpg", shape: "image", "title": "id: " + newId + "</br>" + "IP address: " + "</br>" + "Mask: " + "</br>" + "Default Gateway: " });
+
+            nodeIds.push(newId);
+        }
+
+
+        function removeRandomNode() {
+            var randomNodeId = nodeIds[Math.floor(Math.random() * nodeIds.length)];
+            nodes.remove({ id: randomNodeId });
+
+            var index = nodeIds.indexOf(randomNodeId);
+            nodeIds.splice(index, 1);
+        }
+
+        function resetAllNodes() {
+            document.getElementById("objectparameters").submit();
+            nodes.clear();
+            edges.clear();
+            nodes.add(nodesArray);
+            edges.add(edgesArray);
+        }
+
+        function deleteEdge() {
+            edges.remove(clickedid2);
+        }
+
+        function deleteItem() {
+
+            document.getElementById("objectparameters").submit();
+            nodes.remove(clickedid);
+            console.log(schematy);
+        }
+
+        function resetAll() {
+            if (network !== null) {
+                network.destroy();
+                network = null;
+            }
+            startNetwork();
+        }
+
         startNetwork();
-    }
-
-    startNetwork();
-</script>
+    </script>
 </body>
 </html>

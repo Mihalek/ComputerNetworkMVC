@@ -19,9 +19,9 @@ namespace ComputerNetwork
             await Clients.All.SendAsync("CleanMessage");
         }
 
-        public async Task DeleteOneNetwork()
+        public async Task DeleteOneNetwork(string message)
         {
-            await Clients.All.SendAsync("DeleteNetworkMessage");
+            await Clients.All.SendAsync("DeleteNetworkMessage", message);
         }
     }
 }
