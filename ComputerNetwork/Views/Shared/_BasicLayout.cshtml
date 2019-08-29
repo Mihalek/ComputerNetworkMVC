@@ -32,6 +32,7 @@
         var clickedid, clickedid2;
         var helpid;
         var idrouter, idcomputer, idswitch = 0;
+        var drew;
 
 
         var connection = new signalR.HubConnectionBuilder().withUrl("/messages").build();
@@ -54,6 +55,77 @@
 
         });
 
+        connection.on("UpdateNetworkMessage", function (message) {
+            console.log("updatenetworkmessage");
+                resetAllNodes();
+                var szukam = document.getElementById("NetworkSchemas").value.toString();
+                schematy = []
+                polaczenia = []
+                drew = szukam;
+                $.ajax({
+                    type: "GET",
+                    url: "Home/GetNetwork",
+                    data: { mystring: szukam },
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (result) {
+                        nodes.add(result.routers);
+                        nodes.add(result.computers);
+                        nodes.add(result.switches);
+                        edges.add(result.edges);
+                    },
+                    error: function (response) {
+                        alert("error");
+                    }
+
+                })
+
+
+                container = document.getElementById('mynetwork');
+                var graph = { nodes: nodes, edges: edges };
+                var options = {
+                    manipulation: {
+                        enabled: false,
+                        addEdge: function (data, callback) {
+                            callback(data);
+                        }
+                    },
+                    interaction:
+                    {
+                        hover: true
+                    }
+                };
+                network = new vis.Network(container, graph, options);
+
+                network.on('click', function (properties) {
+                    var ids = properties.nodes;
+                    var ids2 = properties.edges;
+                    clickedid = ids;
+                    clickedid2 = ids2;
+                    helpid = clickedid;
+                    document.getElementById("objectparameters").reset();
+                    document.getElementById("nameofelementform").value = nodes.get(clickedid)[0].label.toString(32);
+                    document.getElementById("ipaddressform").value = nodes.get(clickedid)[0].ipaddress.toString(32);
+                    document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
+                    document.getElementById("maskform").value = nodes.get(clickedid)[0].mask.toString(32);
+                    document.getElementById("defaultgatewayform").value = nodes.get(clickedid)[0].defaultgateway.toString(32);
+                    document.getElementById("idform").value = helpid.toString(32);
+
+                });
+                network.on("hoverNode", function (params) {
+                    network.canvas.body.container.style.cursor = 'pointer';
+                });
+
+
+                window.onresize = function () { network.fit(); }
+
+
+
+
+            }
+        
+        );
+
         connection.start().catch(err => console.error(err.toString()));
 
 
@@ -74,6 +146,49 @@
         });
 
 
+        document.getElementById("updatenetworkid").addEventListener("click", event => {
+            
+                console.log("addeventlissteren");
+                var Polaczenia = [];
+                var i = 0
+                for (var key in edges._data) {
+                    var value = edges._data[key];
+                    Polaczenia.push(value);
+                }
+                var Obiekty = [];
+                var i = 0
+                for (var key in nodes._data) {
+                    var value = nodes._data[key];
+                    Obiekty.push(value);
+
+                }
+
+                var PostData = {
+                    NazwaSieci: drew,
+                    Polaczenia: Polaczenia,
+                    Obiekty: Obiekty
+                };
+
+
+                $.ajax({
+                    url: 'Home/Update',
+                    data: JSON.stringify(PostData),
+                    contentType: 'application/json',
+                    type: 'POST',
+                    success: function (result) {
+                        console.log("sukces");
+                    },
+                    error: function (response) {
+                        alert("error");
+                    }
+
+
+                });
+
+           
+        });
+
+
         function growIdRouter() {
             idrouter = idrouter + 1;
             return idrouter;
@@ -90,29 +205,12 @@
         }
 
 
-        document.getElementById("updatenetworkid").addEventListener("click", event => {
-                var Polaczenia = [];
-            var i = 0
-            for (var key in edges._data) {
-                var value = edges._data[key];
-                Polaczenia.push(value);
-            }
-            var Obiekty = [];
-            var i = 0
-            for (var key in nodes._data) {
-                var value = nodes._data[key];
-                Obiekty.push(value);
 
-            }
-            console.log(Polaczenia);
-            console.log(Obiekty);
-
-
-        });
-
-        function updateNetwork() {
-        
-
+        function updateNetwork() {      
+            console.log("updatenetwork");
+            const message = "hej";
+            connection.invoke("UpdateNetwork", message).catch(err => console.error(err.toString()));
+            event.preventDefault();
 
         }
 
@@ -121,7 +219,6 @@
             flaga_do_odswiezenia = 1;
 
             var todelete = document.getElementById("NetworkSchemas").value.toString();
-            console.log(todelete);
             $.ajax({
                 url: 'Home/DeleteNetwork',
                 data: JSON.stringify(todelete),
@@ -152,8 +249,6 @@
                 Obiekty.push(value);
 
             }
-            console.log(Polaczenia);
-            console.log(Obiekty);
 
             var nameofnetwork = document.getElementById("nameofnetwork").value.toString();
             var PostData = {
@@ -169,8 +264,7 @@
                 contentType: 'application/json',
                 type: 'POST',
                 success: function (result) {
-                    console.log("wyslano");
-                    console.log(result);
+
                 },
                 error: function (response) {
                     alert("error");
@@ -192,8 +286,6 @@
                 contentType: "application/json",
                 dataType: "json",
                 success: function (result) {
-                    console.log(result);
-                    flaga_do_odswiezenia = 1;
                 },
                 error: function (response) {
                     alert("error");
@@ -219,11 +311,12 @@
 
         function draw() {
             resetAllNodes();
-
             var szukam = document.getElementById("NetworkSchemas").value.toString();
 
+            $("#nameofnetworktoread").html(szukam);
             schematy = []
             polaczenia = []
+            drew = szukam;
             $.ajax({
                 type: "GET",
                 url: "Home/GetNetwork",
@@ -235,8 +328,6 @@
                     nodes.add(result.computers);
                     nodes.add(result.switches);
                     edges.add(result.edges);
-                    console.log(nodes);
-                    console.log(edges);
                 },
                 error: function (response) {
                     alert("error");
@@ -251,7 +342,6 @@
                 manipulation: {
                     enabled: false,
                     addEdge: function (data, callback) {
-                        console.log('add edge!', data);
                         callback(data);
                     }
                 },
@@ -276,7 +366,6 @@
                 document.getElementById("defaultgatewayform").value = nodes.get(clickedid)[0].defaultgateway.toString(32);
                 document.getElementById("idform").value = helpid.toString(32);
 
-                console.log(nodes.get(clickedid)[0]);
             });
             network.on("hoverNode", function (params) {
                 network.canvas.body.container.style.cursor = 'pointer';
@@ -296,7 +385,6 @@
                 contentType: "application/json",
                 dataType: "json",
                 success: function (result) {
-                    console.log(result);
                 },
                 error: function (response) {
                     alert("error");
@@ -349,7 +437,6 @@
                 manipulation: {
                     enabled: false,
                     addEdge: function (data, callback) {
-                        console.log('add edge!', data);
                         callback(data);
                         var dataobject = JSON.stringify({
                             'from': data.from, 'to': data.to, 'id': data.id
@@ -381,9 +468,7 @@
                 document.getElementById("defaultgatewayform").value = nodes.get(clickedid)[0].defaultgateway.toString(32);
                 document.getElementById("idform").value = helpid.toString(32);
 
-
-                //console.log(nodes.get(clickedid)[0].title);
-                console.log(nodes.get(clickedid)[0]);
+              
             });
             network.on("hoverNode", function (params) {
                 network.canvas.body.container.style.cursor = 'pointer';
@@ -459,7 +544,6 @@
 
             document.getElementById("objectparameters").submit();
             nodes.remove(clickedid);
-            console.log(schematy);
         }
 
         function resetAll() {

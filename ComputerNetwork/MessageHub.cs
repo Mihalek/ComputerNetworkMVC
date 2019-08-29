@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ComputerNetwork
@@ -22,6 +23,12 @@ namespace ComputerNetwork
         public async Task DeleteOneNetwork(string message)
         {
             await Clients.All.SendAsync("DeleteNetworkMessage", message);
+        }
+
+        public async Task UpdateNetwork(string message)
+        {
+            Thread.Sleep(500);
+            await Clients.Others.SendAsync("UpdateNetworkMessage",message);
         }
     }
 }

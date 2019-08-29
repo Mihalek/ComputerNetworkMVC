@@ -29,12 +29,16 @@
                     <h4>Name of Network</h4>
                     <textarea id="nameofnetwork"></textarea><br />
                     <button type="button" id="save" onclick="save()">Save</button>
+                    <h5 id="nameofnetworktoread">Nazwa narysowanej sieci</h5>
                 </div>
             </div>
 
         </div>
+        <br />
+        <br />
+        <div id="mynetwork" class="col-md-7 centerdiv">
 
-            <div id="mynetwork" class="col-md-7 centerdiv"></div>
+        </div>
             <div class="col-md-2 rightdiv">
                 <form asp-controller="Home" style="display: inline-block;" id="objectparameters" method="post" target="votar">
                     <div asp-validation-summary="ModelOnly"></div>
