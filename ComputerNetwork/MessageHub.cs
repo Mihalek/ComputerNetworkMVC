@@ -12,16 +12,19 @@ namespace ComputerNetwork
     {
         public async Task AddNetworks (string message)
         {
+            Thread.Sleep(500);
             await Clients.All.SendAsync("ReceiveMessage", message +" "+ DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
         }
 
         public async Task CleanNetworks()
         {
+            Thread.Sleep(500);
             await Clients.All.SendAsync("CleanMessage");
         }
 
         public async Task DeleteOneNetwork(string message)
         {
+            Thread.Sleep(500);
             await Clients.All.SendAsync("DeleteNetworkMessage", message);
         }
 

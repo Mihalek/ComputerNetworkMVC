@@ -57,6 +57,9 @@
 
         connection.on("UpdateNetworkMessage", function (message) {
             console.log("updatenetworkmessage");
+            console.log("drew: " + drew);
+            console.log("message: " + message);
+            if (drew == message) {
                 resetAllNodes();
                 var szukam = document.getElementById("NetworkSchemas").value.toString();
                 schematy = []
@@ -123,7 +126,7 @@
 
 
             }
-        
+        }
         );
 
         connection.start().catch(err => console.error(err.toString()));
@@ -140,7 +143,7 @@
         });
 
         document.getElementById("deleteonenetwork").addEventListener("click", event => {
-            const message = document.getElementById("NetworkSchemas").value.toString();
+            const message = document.getElementById("NetworkSchemas").value;
             connection.invoke("DeleteOneNetwork", message).catch(err => console.error(err.toString()));
             event.preventDefault();
         });
@@ -208,7 +211,7 @@
 
         function updateNetwork() {      
             console.log("updatenetwork");
-            const message = "hej";
+            const message = document.getElementById("NetworkSchemas").value.toString();
             connection.invoke("UpdateNetwork", message).catch(err => console.error(err.toString()));
             event.preventDefault();
 
@@ -313,6 +316,7 @@
             resetAllNodes();
             var szukam = document.getElementById("NetworkSchemas").value.toString();
 
+        
             $("#nameofnetworktoread").html(szukam);
             schematy = []
             polaczenia = []
