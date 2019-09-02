@@ -32,7 +32,7 @@
         var clickedid, clickedid2;
         var helpid;
         var idrouter, idcomputer, idswitch = 0;
-        var drew;
+        var drew = $("#nameofnetworktoread").innerHTML;
 
 
         var connection = new signalR.HubConnectionBuilder().withUrl("/messages").build();
@@ -150,7 +150,8 @@
 
 
         document.getElementById("updatenetworkid").addEventListener("click", event => {
-            
+                drew = document.getElementById("nameofnetworktoread").innerHTML;
+                console.log(drew);
                 console.log("addeventlissteren");
                 var Polaczenia = [];
                 var i = 0
@@ -320,7 +321,6 @@
             $("#nameofnetworktoread").html(szukam);
             schematy = []
             polaczenia = []
-            drew = szukam;
             $.ajax({
                 type: "GET",
                 url: "Home/GetNetwork",
