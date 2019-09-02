@@ -32,7 +32,7 @@
         var clickedid, clickedid2;
         var helpid;
         var idrouter, idcomputer, idswitch = 0;
-        var drew = $("#nameofnetworktoread").innerHTML;
+        var drew;
 
 
         var connection = new signalR.HubConnectionBuilder().withUrl("/messages").build();
@@ -56,6 +56,7 @@
         });
 
         connection.on("UpdateNetworkMessage", function (message) {
+            drew = document.getElementById("nameofnetworktoread").innerHTML;
             console.log("updatenetworkmessage");
             console.log("drew: " + drew);
             console.log("message: " + message);
